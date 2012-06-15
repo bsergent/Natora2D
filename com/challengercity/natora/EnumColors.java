@@ -9,7 +9,7 @@ import java.awt.*;
  *
  * @author Ben Sergent V
  */
-public class ColorList {
+public class EnumColors {
     
     protected static Color neonGreen = new Color(60,209,46);
     protected static Color white = new Color(255,255,255);
