@@ -4,6 +4,7 @@
  */
 package com.challengercity.natora;
 
+import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.*;
 /**
@@ -12,14 +13,19 @@ import org.lwjgl.*;
  */
 public class Natora {
 
-    protected String username;
-    protected Player thePlayer;
-    protected Controller control;
-    protected EnumGameState gs;
+    private EnumGameState gs;
+    public String username;
+    public Player thePlayer;
+    public Controller control;
+    public Renderer renderer;
+    public String version;
+    public int screenWidth;
+    public int screenHeight;
 
     public Natora(String username) {
         super();
         gs = EnumGameState.menu;
+        this.username=username;
     }
     
     public static void main(String[] args) {
@@ -37,20 +43,26 @@ public class Natora {
     }
     
     public void run() {
+        version = "0.0.5";
+        System.out.println("[Natora] Initialized - v"+version);
+        screenWidth=1280;
+        screenHeight=720;
         try {
-            Display.setDisplayMode(new DisplayMode(640, 480));
-            Display.setTitle("Natora");
+            Display.setDisplayMode(new DisplayMode(screenWidth, screenHeight));
+            //Display.setFullscreen(true);
+            Display.setTitle("Natora - "+version);
             Display.create();
-        } catch (LWJGLException ex) {
+        } catch(Exception ex) {
             ex.printStackTrace();
-            Display.destroy();
-            System.exit(1);
         }
-        control = new Controller(this);
+        control = new Controller(this); // Listen for input
+        renderer = new Renderer(this); // Prepare for rendering
+        
+        thePlayer = new Player(30,30,16,16,0,0,0,0,username);
+        new Player(5,5,16,16,0,0,0,0,"xXWeboy60Xx"); // Create test object
         
         while(!Display.isCloseRequested()) { // Game Loop
-            Display.update();
-            Display.sync(60);
+            renderer.render(screenWidth, screenHeight);
         }
         
         Display.destroy();

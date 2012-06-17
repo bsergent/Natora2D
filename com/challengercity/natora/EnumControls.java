@@ -12,11 +12,25 @@ import org.lwjgl.input.Keyboard;
  */
 public enum EnumControls {
 
-    moveUp,
-    moveDown,
-    moveLeft,
-    moveRight,
-    performAction1,
-    performAction2
+    moveUp(Keyboard.KEY_UP),
+    moveDown(Keyboard.KEY_DOWN),
+    moveLeft(Keyboard.KEY_LEFT),
+    moveRight(Keyboard.KEY_RIGHT),
+    performAction1(0),
+    performAction2(0);
+    
+    private int key;
+    
+    private EnumControls(int key) {
+        this.key = key;
+    }
+    
+    public static void setKey() {
+        
+    }
+    
+    public static int getKey() {
+        return moveUp.key;
+    }
     
 }

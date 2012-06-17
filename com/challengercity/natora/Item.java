@@ -11,10 +11,14 @@ package com.challengercity.natora;
  */
 public class Item extends Entity {
 
-    private int countdown = 60;
+    private int countdown = 60000;
     
-    public Item(float x, float y, int picX1, int picY1, int picX2, int picY2) {
-        super(x,y,picX1,picY1,picX2,picY2);
+    public Item(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight) {
+        super(x, y, width, height, picX, picY, picWidth, picHeight);
+    }
+    
+    public void draw() {
+        
     }
     
 }
