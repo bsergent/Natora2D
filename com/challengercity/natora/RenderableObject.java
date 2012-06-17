@@ -11,6 +11,7 @@ package com.challengercity.natora;
  */
 public abstract class RenderableObject {
 
+    protected int posX, posY, width, height;
     public int id;
     public abstract void draw();
     public abstract void delete();

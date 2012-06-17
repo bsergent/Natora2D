@@ -13,10 +13,11 @@ public class Tile extends RenderableObject {
     
     private float posX, posY, width, height, velX, velY;
     private int picX1, picY1, picX2, picY2;
+    protected EnumGameState gs;
     private String name;
     private int hardness;
     
-    public Tile(float x, float y, int picX1, int picY1, int picX2, int picY2, String name, int hardness) {
+    public Tile(float x, float y, int picX1, int picY1, int picX2, int picY2, EnumGameState gs, String name, int hardness) {
         
         this.posX=x;
         this.posY=y;
@@ -26,8 +27,9 @@ public class Tile extends RenderableObject {
         this.picY2=picY1;
         this.name=name;
         this.hardness=hardness;
-        this.id = Renderer.getNextRenderId();
-        Renderer.addToRenderList(this);
+        this.gs = gs;
+        this.id = Renderer.getNextRenderId(gs);
+        Renderer.addToRenderList(this, gs);
           
     }
     
@@ -53,7 +55,7 @@ public class Tile extends RenderableObject {
     }
     
     public void delete() {
-        Renderer.removeFromRenderList(this);
+        Renderer.removeFromRenderList(this, gs);
     }
     
     public void draw() {

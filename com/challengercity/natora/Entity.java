@@ -5,6 +5,7 @@
 package com.challengercity.natora;
 
 import static org.lwjgl.opengl.GL11.*;
+import org.newdawn.slick.opengl.Texture;
 /**
  *
  * @author Ben Sergent V
@@ -12,9 +13,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class Entity extends RenderableObject {
     
-    protected int posX, posY, width, height, velX, velY, picX, picY, picWidth, picHeight;
+    protected int posX, posY, width, height, picX, picY, picWidth, picHeight;
+    protected int velX, velY;
+    protected Texture texture;
+    protected EnumGameState gs;
     
-    public Entity(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight) {
+    public Entity(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, EnumGameState gs) {
         
         this.posX=x;
         this.posY=y;
@@ -24,8 +28,9 @@ public abstract class Entity extends RenderableObject {
         this.picHeight=picHeight;
         this.width=width;
         this.height=height;
-        this.id = Renderer.getNextRenderId();
-        Renderer.addToRenderList(this);
+        this.gs = gs;
+        this.id = Renderer.getNextRenderId(gs);
+        Renderer.addToRenderList(this, gs);
         
     }
 
@@ -78,8 +83,13 @@ public abstract class Entity extends RenderableObject {
         this.width = width;
     }
     
+    public void move() {
+        posX+=velX;
+        posY+=velY;
+    }
+    
     public void delete() {
-        Renderer.removeFromRenderList(this);
+        Renderer.removeFromRenderList(this, gs);
     }
     
     public abstract void draw();
