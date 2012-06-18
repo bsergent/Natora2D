@@ -10,7 +10,6 @@ package com.challengercity.natora;
  */
 public enum EnumGameState {
     
-    INTRO,
     MENU, 
     INGAME
     

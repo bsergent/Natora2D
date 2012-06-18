@@ -15,16 +15,18 @@ public class Natora {
 
     public static EnumGameState gs;
     public String username;
-    public Player thePlayer;
+    public EntityPlayer thePlayer;
     public Controller control;
     public Renderer renderer;
     public String version;
+    public Screen currentScreen;
     public static int screenWidth;
     public static int screenHeight;
+    private static long lastFrame;
 
     public Natora(String username) {
         super();
-        gs = EnumGameState.INTRO;
+        gs = EnumGameState.MENU;
         this.username=username;
     }
     
@@ -55,23 +57,25 @@ public class Natora {
         } catch(Exception ex) {
             ex.printStackTrace();
         }
+        
         control = new Controller(this); // Listen for input
-        renderer = new Renderer(this); // Prepare for rendering
-
-        // INTRO
-        new GUIImage(screenWidth/2-195, screenHeight/2-66, 390, 112, 0, 0, 0, 0, EnumGameState.INTRO,"NatoraHeader", ".PNG");
+        renderer = new Renderer(this);
+        currentScreen = new ScreenMenu(this); // Create Menu Screen
         
-        // MENU
-        new GUIImage(screenWidth/2-195, 20, 390, 112, 0, 0, 0, 0, EnumGameState.MENU,"NatoraHeader", ".PNG");
-        new GUIButton(screenWidth/2-80, screenHeight/2-15, 160, 30, 0, 0, 160, 30, EnumGameState.MENU, "GUIStartGame", ".PNG");
+        currentScreen.updateMovement();
+        renderer.render();
+        currentScreen.mouseUpdate();
         
-        // INGAME
-        thePlayer = new Player(30,30,32,32,0,0,16,16,EnumGameState.INGAME,username);
+        try {
+            Thread.sleep(1000);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         
         while(!Display.isCloseRequested()) { // Game Loop
-            renderer.move();
+            currentScreen.updateMovement();
             renderer.render();
-            renderer.mouseUpdate();
+            currentScreen.mouseUpdate();
         }
         
         Display.destroy();

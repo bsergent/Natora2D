@@ -28,8 +28,8 @@ public class Tile extends RenderableObject {
         this.name=name;
         this.hardness=hardness;
         this.gs = gs;
-        this.id = Renderer.getNextRenderId(gs);
-        Renderer.addToRenderList(this, gs);
+        this.id = screen.getNextRenderId();
+        screen.addToRenderList(this);
           
     }
     
@@ -55,7 +55,7 @@ public class Tile extends RenderableObject {
     }
     
     public void delete() {
-        Renderer.removeFromRenderList(this, gs);
+        screen.removeFromRenderList(this);
     }
     
     public void draw() {

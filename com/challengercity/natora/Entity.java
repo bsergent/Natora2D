@@ -16,21 +16,21 @@ public abstract class Entity extends RenderableObject {
     protected int posX, posY, width, height, picX, picY, picWidth, picHeight;
     protected int velX, velY;
     protected Texture texture;
-    protected EnumGameState gs;
+    protected Screen screen;
     
-    public Entity(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, EnumGameState gs) {
+    public Entity(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen sc) {
         
         this.posX=x;
         this.posY=y;
-        this.picX=picX;
-        this.picY=picY;
+        this.picX=picX-1;
+        this.picY=picY-1;
         this.picWidth=picWidth;
         this.picHeight=picHeight;
         this.width=width;
         this.height=height;
-        this.gs = gs;
-        this.id = Renderer.getNextRenderId(gs);
-        Renderer.addToRenderList(this, gs);
+        this.screen = sc;
+        this.id = screen.getNextRenderId();
+        screen.addToRenderList(this);
         
     }
 
@@ -84,12 +84,12 @@ public abstract class Entity extends RenderableObject {
     }
     
     public void move() {
-        posX+=velX;
-        posY+=velY;
+        posX += velX;
+        posY += velY;
     }
     
     public void delete() {
-        Renderer.removeFromRenderList(this, gs);
+        screen.removeFromRenderList(this);
     }
     
     public abstract void draw();

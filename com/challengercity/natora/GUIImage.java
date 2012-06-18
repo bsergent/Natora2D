@@ -15,8 +15,8 @@ public class GUIImage extends GUI {
 
     Texture texture;
     
-    public GUIImage (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, EnumGameState gs, String texName, String texExt) {
-        super(x, y, width, height, picX, picY, picWidth, picHeight, gs);
+    public GUIImage (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen screen, String texName, String texExt) {
+        super(x, y, width, height, picX, picY, picWidth, picHeight, screen);
         this.texture = ResourceLoader.loadImage(texName, texExt);
     }
     
@@ -25,21 +25,23 @@ public class GUIImage extends GUI {
     }
     
     public void draw() {
-        texture.bind();
+        if (visible) {
+            texture.bind();
 
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);  // Upper-Left
-        glVertex2i(posX, posY);
+            glBegin(GL_QUADS);
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Left
+            glVertex2i(posX, posY);
 
-        glTexCoord2f(1, 0);  // Upper-Right
-        glVertex2i(posX+width, posY);
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Right
+            glVertex2i(posX+width, posY);
 
-        glTexCoord2f(1, 1);  // Lower-Right
-        glVertex2i(posX+width, posY+height);
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Right
+            glVertex2i(posX+width, posY+height);
 
-        glTexCoord2f(0, 1);  // Lower-Left
-        glVertex2i(posX, posY+height);
-        glEnd();
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Left
+            glVertex2i(posX, posY+height);
+            glEnd();
+        }
     }
     
     public void checkMouse() {

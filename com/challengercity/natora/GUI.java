@@ -12,21 +12,19 @@ package com.challengercity.natora;
 public abstract class GUI extends RenderableObject {
 
     protected int posX, posY, width, height, picX, picY, picWidth, picHeight;
-    protected EnumGameState gs;
+    protected Screen screen;
     
-    public GUI(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, EnumGameState gs) {
+    public GUI(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen screen) {
         
         this.posX=x;
         this.posY=y;
-        this.picX=picX;
-        this.picY=picY;
-        this.picWidth=picWidth;
-        this.picHeight=picHeight;
+        this.picX=picX-1;
+        this.picY=picY-1;
+        this.picWidth=picWidth-1;
+        this.picHeight=picHeight-1;
         this.width=width;
         this.height=height;
-        this.gs=gs;
-        this.id = Renderer.getNextRenderId(gs);
-        Renderer.addToRenderList(this, gs);
+        this.screen=screen;
         
     }
     

@@ -18,10 +18,12 @@ public class GUIButton extends GUI {
 
     private Texture texture;
     private int hovered = 0;
+    public int actionId;
     
-    public GUIButton (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, EnumGameState gs, String texName, String texExt) {
-        super(x, y, width, height, picX, picY, picWidth, picHeight, gs);
+    public GUIButton (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, int actionId, Screen screen, String texName, String texExt) {
+        super(x, y, width, height, picX, picY, picWidth, picHeight, screen);
         this.texture = ResourceLoader.loadImage(texName, texExt);
+        this.actionId = actionId;
     }
     
     public void delete() {
@@ -29,30 +31,30 @@ public class GUIButton extends GUI {
     }
     
     public void draw() {
-        texture.bind();
+        if (visible) {
+            texture.bind();
 
-        glBegin(GL_QUADS);
-        glTexCoord2f(picX, picY+(hovered*picHeight));  // Upper-Left
-        glVertex2i(posX, posY);
+            glBegin(GL_QUADS);
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+(hovered*picHeight), texture.getImageHeight()));  // Upper-Left
+            glVertex2i(posX, posY);
 
-        glTexCoord2f(picX+picWidth, picY+(hovered*picHeight));  // Upper-Right
-        glVertex2i(posX+width, posY);
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+(hovered*picHeight), texture.getImageHeight()));  // Upper-Right
+            glVertex2i(posX+width, posY);
 
-        glTexCoord2f(picX+picWidth, picY+picHeight+(hovered*picHeight));  // Lower-Right
-        glVertex2i(posX+width, posY+height);
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight+(hovered*picHeight), texture.getImageHeight()));  // Lower-Right
+            glVertex2i(posX+width, posY+height);
 
-        glTexCoord2f(picX, picY+picHeight+(hovered*picHeight));  // Lower-Left
-        glVertex2i(posX, posY+height);
-        glEnd();
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight+(hovered*picHeight), texture.getImageHeight()));  // Lower-Left
+            glVertex2i(posX, posY+height);
+            glEnd();
+        }
     }
     
     public void checkMouse() {
         if (Mouse.getX()>posX&&Mouse.getX()<(posX+width) && (Natora.screenHeight-Mouse.getY())>posY&&(Natora.screenHeight-Mouse.getY())<(posY+height)) {
-            System.out.println("[GUIButton] Hovered!");
             hovered = 1;
             if (Mouse.isButtonDown(0)) {
-                System.out.println("[GUIButton] Clicked!");
-                Natora.gs=EnumGameState.INGAME;
+                screen.actionPerformed(id);
             }
         } else {
             hovered = 0;

@@ -2,29 +2,28 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.challengercity.natora;
 
 import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.opengl.*;
+import java.util.Random;
 /**
  *
- * @author Ben Sergent V
+ * @author Ben Sergent V/ha1fBit
  */
-public class EntityPlayer extends Entity {
+public class EntityMonster extends Entity {
     
     private int dir = 0;
     private int ani = 0;
     private int aniDelay = 15;
-    private String username;
-
-    public EntityPlayer(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen sc, String username) {
-        super(x, y, width, height, picX, picY, picWidth, picHeight, sc);
-        this.username = username;
-        System.out.println("[Entity] Entity created - "+x+","+y+" - "+"Player - "+username);
-    }
+    private int movementChangeDelay = 0;
+    private Random randGen = new Random();
     
-    public String getUsername() {
-        return username;
+
+    public EntityMonster(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen sc) {
+        super(x, y, width, height, picX, picY, picWidth, picHeight, sc);
+        System.out.println("[Entity] Entity created - "+x+","+y+" - "+"Monster");
     }
 
     public int getDir() {
@@ -42,6 +41,37 @@ public class EntityPlayer extends Entity {
     public void setAni(int ani) {
         this.ani = ani;
     } 
+    
+    public void move() {
+        if (movementChangeDelay<=0) {
+            if (randGen.nextBoolean()) {
+                velX = randGen.nextInt(3)-1;
+                velY = 0;
+                if (velX>0) {
+                    dir=0;
+                } else if (velX<0){
+                    dir=2;
+                }
+            } else {
+                velY = randGen.nextInt(3)-1;
+                velX = 0;
+                if (velY>0) {
+                    dir=3;
+                } else if (velY<0) {
+                    dir=1;
+                }
+            }
+            movementChangeDelay=60;
+        }
+        if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) { // Check screen boundries
+            posX += velX;
+            posY += velY;
+        }
+        movementChangeDelay--;
+        if (velX==0&&velY==0) {
+            ani=0;
+        }
+    }
     
     public void draw() {
         if (texture == null) {
