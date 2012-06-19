@@ -50,25 +50,24 @@ public class Controller {
                     // Split
                     case INGAME:
                     if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                        nt.thePlayer.setVelY(-2);
+                        nt.thePlayer.setVelY(-0.35f);
                         nt.thePlayer.setVelX(0);
                         nt.thePlayer.setDir(1);
                     } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                        nt.thePlayer.setVelY(2);
+                        nt.thePlayer.setVelY(0.35f);
                         nt.thePlayer.setVelX(0);
                         nt.thePlayer.setDir(3);
                     } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                        nt.thePlayer.setVelX(-2);
+                        nt.thePlayer.setVelX(-0.35f);
                         nt.thePlayer.setVelY(0);
                         nt.thePlayer.setDir(2);
                     } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                        nt.thePlayer.setVelX(2);
+                        nt.thePlayer.setVelX(0.35f);
                         nt.thePlayer.setVelY(0);
                         nt.thePlayer.setDir(0);
                     } else {
                         nt.thePlayer.setVelX(0);
                         nt.thePlayer.setVelY(0);
-                        nt.thePlayer.setAni(0);
                     }
                     if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
                         Random gen = new Random();

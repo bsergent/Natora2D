@@ -23,6 +23,10 @@ public class Natora {
     public static int screenWidth;
     public static int screenHeight;
     private static long lastFrame;
+    private static long lastFPS;
+    private static int fps;
+    public static int currentFPS;
+    public static long lastDelta;
 
     public Natora(String username) {
         super();
@@ -44,8 +48,33 @@ public class Natora {
         
     }
     
+    public long getTime() {
+        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+    }
+    
+    private int getDelta() {
+        long time = getTime();
+        int delta = (int) (time - lastFrame);
+        lastFrame = time;
+        lastDelta = delta;
+
+        if (delta > 70) {
+            delta = 70;
+        }
+        return delta;
+    }
+    
+    public void updateFPS() {
+        if (getTime() - lastFPS > 1000) { 
+            currentFPS=fps;
+            fps = 0; //reset the FPS counter
+            lastFPS += 1000; //add one second
+        }
+        fps++;
+    }
+    
     public void run() {
-        version = "0.0.8 Alpha";
+        version = "0.0.9 Alpha";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
@@ -62,10 +91,14 @@ public class Natora {
         renderer = new Renderer(this);
         currentScreen = new ScreenMenu(this); // Create Menu Screen
         
+        lastFPS = getTime();
+        getDelta();
+        
         while(!Display.isCloseRequested()) { // Game Loop
-            currentScreen.updateMovement();
+            currentScreen.updateMovement(getDelta());
             renderer.render();
             currentScreen.mouseUpdate();
+            updateFPS();
         }
         
         Display.destroy();

@@ -50,8 +50,7 @@ public class ScreenMenu extends Screen {
             nt.currentScreen = new ScreenGame(nt);
         }
         if (id==1) {
-            Renderer.removeFromRenderList(this);
-            nt.currentScreen = new ScreenGame(nt);
+            System.out.println("[Natora] Multiplayer is not yet finished.");
         }
         if (id==2) {
             try {

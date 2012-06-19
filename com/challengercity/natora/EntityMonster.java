@@ -42,10 +42,21 @@ public class EntityMonster extends Entity {
         this.ani = ani;
     } 
     
-    public void move() {
+    public void move(long delta) {
         if (movementChangeDelay<=0) {
             if (randGen.nextBoolean()) {
-                velX = randGen.nextInt(3)-1;
+                if (randGen.nextInt(4)==0) {
+                    velX = randGen.nextFloat()-0.5f;
+                    if (velX>=0.3f) {
+                        velX = 0.3f;
+                    }
+                    if (velX<=-0.3f) {
+                        velX = -0.3f;
+                    }
+                } else {
+                    velX = 0;
+                    dir=randGen.nextInt(3);
+                }
                 velY = 0;
                 if (velX>0) {
                     dir=0;
@@ -53,7 +64,18 @@ public class EntityMonster extends Entity {
                     dir=2;
                 }
             } else {
-                velY = randGen.nextInt(3)-1;
+                if (randGen.nextInt(4)==0) {
+                    velY = randGen.nextFloat()-0.5f;
+                    if (velY>=0.3f) {
+                        velY=0.3f;
+                    }
+                    if (velY <=-0.3f) {
+                        velY=-0.3f;
+                    }
+                } else {
+                    velY = 0;
+                    dir=randGen.nextInt(3);
+                }
                 velX = 0;
                 if (velY>0) {
                     dir=3;
@@ -63,9 +85,9 @@ public class EntityMonster extends Entity {
             }
             movementChangeDelay=60;
         }
-        if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) { // Check screen boundries
-            posX += velX;
-            posY += velY;
+        if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) { // Check screen boundries
+            posX = posX + (int)(velX*delta);
+            posY = posY + (int)(velY*delta);
 //            for (int i = 0; i<screen.renderList.size(); i++) {
 //                RenderableObject ro = screen.renderList.get(i);
 //                if (this.intersects(ro)) {

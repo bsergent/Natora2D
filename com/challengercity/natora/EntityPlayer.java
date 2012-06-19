@@ -46,10 +46,10 @@ public class EntityPlayer extends Entity {
         this.ani = ani;
     } 
     
-    public void move() {
-        if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) {
-            posX += velX;
-            posY += velY;
+    public void move(long delta) {
+        if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) {
+            posX = posX + (int)(velX*delta);
+            posY = posY + (int)(velY*delta);
         }
         for (int i = 0; i<screen.renderList.size(); i++) {
             RenderableObject ro = screen.renderList.get(i);
@@ -57,6 +57,9 @@ public class EntityPlayer extends Entity {
                 EntityMonster em = (EntityMonster) ro;
                 em.kill(this);
             }
+        }
+        if (velX==0&&velY==0) {
+            ani=0;
         }
     }
     

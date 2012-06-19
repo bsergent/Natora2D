@@ -34,6 +34,16 @@ public class Renderer {
         renderList.remove(sc.id);
     }
     
+    public static int getObjectCount() {
+        int count = 0;
+        for (int i = 0; i<Screen.renderList.size(); i++) {
+            if (Screen.renderList.get(i) instanceof Entity) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
     public void render() {
         glMatrixMode(GL_PROJECTION);
         glEnable(GL_TEXTURE_2D);

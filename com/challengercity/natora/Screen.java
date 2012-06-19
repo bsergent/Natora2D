@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public abstract class Screen {
 
-    protected static ArrayList<RenderableObject> renderList;
+    public static ArrayList<RenderableObject> renderList;
     protected Natora nt;
     protected int id;
     
@@ -37,8 +37,8 @@ public abstract class Screen {
         return null;
     }
     
-    public int getNextRenderId() {
-        return renderList.size();
+    public int getRenderId() {
+        return renderList.size()-1;
     }
     
     public void addToRenderList(RenderableObject ro) {
@@ -55,11 +55,11 @@ public abstract class Screen {
         }
     }
     
-    public void updateMovement() {
+    public void updateMovement(long delta) {
         for (int i = 0; i<renderList.size(); i++) {
             if (renderList.get(i) instanceof Entity) {
                 Entity ent = (Entity) renderList.get(i);
-                ent.move();
+                ent.move(delta);
             }
         }
     }

@@ -14,7 +14,7 @@ import org.newdawn.slick.opengl.Texture;
 public abstract class Entity extends RenderableObject {
     
     protected int posX, posY, width, height, picX, picY, picWidth, picHeight;
-    protected int velX, velY;
+    protected float velX, velY;
     protected Texture texture;
     protected Screen screen;
     
@@ -29,8 +29,7 @@ public abstract class Entity extends RenderableObject {
         this.width=width;
         this.height=height;
         this.screen = sc;
-        this.id = screen.getNextRenderId();
-        screen.addToRenderList(this);
+        this.id = screen.getRenderId();
         
     }
 
@@ -59,19 +58,19 @@ public abstract class Entity extends RenderableObject {
         this.posY = posY;
     }
 
-    public int getVelX() {
+    public float getVelX() {
         return velX;
     }
 
-    public void setVelX(int velX) {
+    public void setVelX(float velX) {
         this.velX = velX;
     }
 
-    public int getVelY() {
+    public float getVelY() {
         return velY;
     }
 
-    public void setVelY(int velY) {
+    public void setVelY(float velY) {
         this.velY = velY;
     }
 
@@ -83,10 +82,10 @@ public abstract class Entity extends RenderableObject {
         this.width = width;
     }
     
-    public void move() {
-        if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) {
-            posX += velX;
-            posY += velY;
+    public void move(long delta) {
+        if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) {
+            posX = posX + (int)(velX*delta);
+            posY = posY + (int)(velY*delta);
         }
     }
     

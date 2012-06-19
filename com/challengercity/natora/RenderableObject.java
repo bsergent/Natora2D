@@ -33,7 +33,7 @@ public abstract class RenderableObject {
     }
     
     public boolean intersects(RenderableObject ro) {
-        hitbox.setBounds( posX, posY, width, height);
+        hitbox.setBounds(posX, posY, width, height);
 	return hitbox.intersects(ro.posX, ro.posY, ro.width, ro.height);
     }
 }
