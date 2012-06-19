@@ -4,7 +4,9 @@
  */
 package com.challengercity.natora;
 
+import java.awt.Font;
 import static org.lwjgl.opengl.GL11.*;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.*;
 /**
  *
@@ -14,6 +16,7 @@ public class EntityPlayer extends Entity {
     
     private int dir = 0;
     private int ani = 0;
+    protected TrueTypeFont font;
     private int aniDelay = 15;
     private String username;
 
@@ -58,6 +61,9 @@ public class EntityPlayer extends Entity {
     }
     
     public void draw() {
+        if (font == null) {
+                font = new TrueTypeFont(new Font("Courier", Font.PLAIN, 12),true);
+            }
         if (texture == null) {
             texture = ResourceLoader.loadImage("EntityPlayer", ".PNG");
         }
@@ -76,6 +82,10 @@ public class EntityPlayer extends Entity {
         glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), texture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, texture.getImageHeight()));  // Lower-Left
         glVertex2i(posX, posY+height);
         glEnd();
+        
+        int strPosX = posX+width/2-(font.getWidth(username)/2);
+        int strPosY = posY+height+2;
+        font.drawString(strPosX, strPosY, username);
         
         if (aniDelay<=0) {
             aniDelay=15;

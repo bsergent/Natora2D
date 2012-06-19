@@ -18,7 +18,7 @@ public class ScreenMenu extends Screen {
 
     public ScreenMenu(Natora nt) {
         super(nt);
-        Natora.gs=EnumGameState.MENU;
+        Natora.gs=EnumGameState.MAINMENU;
         startup();
     }
     
@@ -30,15 +30,17 @@ public class ScreenMenu extends Screen {
         addToRenderList(b);
         b = new GUIButton(Natora.screenWidth/2-100, 300, 250, 40, 2, this, "Options", 24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, 350, 250, 40, 3, this, "About", 24);
+        b = new GUIButton(Natora.screenWidth/2-100, 350, 250, 40, 3, this, "Credits", 24);
         addToRenderList(b);
         b = new GUIButton(Natora.screenWidth/2-100, Natora.screenHeight-60, 250, 40, 4, this, "Exit", 24);
         addToRenderList(b);
         b = new GUIImage(Natora.screenWidth/2-256, 20, 512, 147, 0, 0, 512, 147, this, "NatoraLogo", ".PNG");
         addToRenderList(b);
-        //b = new GUIImageLogo(0, 0, Natora.screenWidth, Natora.screenHeight, 1, 1, 8, 8, this, "BlackDot", ".PNG");
+        b = new GUIText(Natora.screenWidth/2-256+287, 20+108, this, "v"+Natora.version, 12, false);
+        addToRenderList(b);
+        //b = new GUIImageMoving(0, 0, Natora.screenWidth, Natora.screenHeight, 1, 1, 8, 8, this, "BlackDot", ".PNG");
         //addToRenderList(b);
-        //b = new GUIImageLogo(Natora.screenWidth/2-100, Natora.screenHeight/2-100, 200, 200, 0, 148, 100, 100, this, "NatoraLogo", ".PNG");
+        //b = new GUIImageMoving(Natora.screenWidth/2-100, Natora.screenHeight/2-100, 200, 200, 0, 148, 100, 100, this, "NatoraLogo", ".PNG");
         //addToRenderList(b);
     }
     
@@ -64,11 +66,8 @@ public class ScreenMenu extends Screen {
             }
         }
         if (id==3) {
-            System.out.println("------Temporary About Page------");
-            System.out.println("-------------NATORA-------------");
-            System.out.println("-------------v0.0.7-------------");
-            System.out.println("-Created by ha1fBit/BenSergentV-");
-            System.out.println("---------Copyright 2012---------");
+            Renderer.removeFromRenderList(this);
+            nt.currentScreen = new ScreenCredits(nt);
         }
         if (id==4) {
             Display.destroy();
@@ -76,8 +75,8 @@ public class ScreenMenu extends Screen {
         }
     }
     
-    public class GUIImageLogo extends GUIImage {
-        public GUIImageLogo (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen screen, String texName, String texExt) {
+    public class GUIImageMoving extends GUIImage {
+        public GUIImageMoving (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen screen, String texName, String texExt) {
             super(x, y, width, height, picX, picY, picWidth, picHeight, screen, texName, texExt);
         }
         public boolean done = false;

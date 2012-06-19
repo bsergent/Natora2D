@@ -18,15 +18,15 @@ public class Natora {
     public EntityPlayer thePlayer;
     public Controller control;
     public Renderer renderer;
-    public String version;
-    public Screen currentScreen;
+    public static String version;
+    public static Screen currentScreen;
     public static int screenWidth;
     public static int screenHeight;
     private static long lastFrame;
 
     public Natora(String username) {
         super();
-        gs = EnumGameState.MENU;
+        gs = EnumGameState.MAINMENU;
         this.username=username;
     }
     
@@ -45,7 +45,7 @@ public class Natora {
     }
     
     public void run() {
-        version = "0.0.7";
+        version = "0.0.8 Alpha";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;

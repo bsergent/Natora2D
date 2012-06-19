@@ -38,8 +38,15 @@ public class Controller {
                     System.exit(0);
                 }
                 switch(nt.gs) {
-                    case MENU:
-                    break;
+                    case MAINMENU:
+                        break;
+                    // Split
+                    case BRANCHMENU:
+                        if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
+                            Renderer.removeFromRenderList(nt.currentScreen);
+                            nt.currentScreen = new ScreenMenu(nt);
+                        }
+                        break;
                     // Split
                     case INGAME:
                     if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
@@ -63,10 +70,6 @@ public class Controller {
                         nt.thePlayer.setVelY(0);
                         nt.thePlayer.setAni(0);
                     }
-                    if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
-                        Renderer.removeFromRenderList(nt.currentScreen);
-                        nt.currentScreen = new ScreenMenu(nt);
-                    }
                     if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
                         Random gen = new Random();
                         if (cooldown<=0) {
@@ -74,10 +77,14 @@ public class Controller {
                             cooldown = 30;
                         }
                     }
+                    if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
+                        Renderer.removeFromRenderList(nt.currentScreen);
+                        nt.currentScreen = new ScreenMenu(nt);
+                    }
                     try {
                         Thread.sleep(5);
                     } catch (Exception ex) {
-
+                        
                     }
                     break;
                 }
