@@ -8,6 +8,7 @@ package com.challengercity.natora;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.*;
+import java.awt.Rectangle;
 /**
  *
  * @author Ben Sergent V/ha1fBit
@@ -18,6 +19,8 @@ public abstract class RenderableObject {
     public int id;
     protected Screen screen;
     protected boolean visible = true;
+    protected Rectangle hitbox = new Rectangle();
+    
     public abstract void draw();
     public abstract void delete();
     
@@ -30,13 +33,7 @@ public abstract class RenderableObject {
     }
     
     public boolean intersects(RenderableObject ro) {
-        if (ro.posX>posX&&ro.posX<(posX+width) && ro.posY>posY&&ro.posY<(posY+height)) {
-            System.out.println("[Collision] Collided!");
-            return true;
-        } else {
-            System.out.println("[Collision] Nope");
-            return false;
-        }
+        hitbox.setBounds( posX, posY, width, height);
+	return hitbox.intersects(ro.posX, ro.posY, ro.width, ro.height);
     }
-    
 }

@@ -22,8 +22,8 @@ public abstract class Entity extends RenderableObject {
         
         this.posX=x;
         this.posY=y;
-        this.picX=picX-1;
-        this.picY=picY-1;
+        this.picX=picX;
+        this.picY=picY;
         this.picWidth=picWidth;
         this.picHeight=picHeight;
         this.width=width;
@@ -84,11 +84,18 @@ public abstract class Entity extends RenderableObject {
     }
     
     public void move() {
-        posX += velX;
-        posY += velY;
+        if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) {
+            posX += velX;
+            posY += velY;
+        }
     }
     
     public void delete() {
+        screen.removeFromRenderList(this);
+    }
+    
+    public void kill(Entity ent) {
+        // Drop & killed by
         screen.removeFromRenderList(this);
     }
     

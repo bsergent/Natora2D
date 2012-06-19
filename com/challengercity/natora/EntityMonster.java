@@ -66,6 +66,13 @@ public class EntityMonster extends Entity {
         if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) { // Check screen boundries
             posX += velX;
             posY += velY;
+//            for (int i = 0; i<screen.renderList.size(); i++) {
+//                RenderableObject ro = screen.renderList.get(i);
+//                if (this.intersects(ro)) {
+//                    posX -= velX;
+//                    posY -= velY;
+//                }
+//            }
         }
         movementChangeDelay--;
         if (velX==0&&velY==0) {
@@ -75,7 +82,7 @@ public class EntityMonster extends Entity {
     
     public void draw() {
         if (texture == null) {
-            texture = ResourceLoader.loadImage("EntityPlayer", ".PNG");
+            texture = ResourceLoader.loadImage("EntityMonster", ".PNG");
         }
         texture.bind();
         

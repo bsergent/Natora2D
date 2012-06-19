@@ -9,6 +9,6 @@ package com.challengercity.natora;
  *
  * @author Ben Sergent V/ha1fBit
  */
-public class GenTunnel extends Gen {
+public class GUIText {
 
 }

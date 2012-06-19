@@ -11,4 +11,12 @@ package com.challengercity.natora;
  */
 public class Gen {
 
+    public static void genMain() {
+        
+    }
+    
+    public static void genTunnels() {
+        
+    }
+    
 }

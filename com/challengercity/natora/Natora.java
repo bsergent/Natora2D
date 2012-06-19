@@ -45,7 +45,7 @@ public class Natora {
     }
     
     public void run() {
-        version = "0.0.6";
+        version = "0.0.7";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
@@ -61,16 +61,6 @@ public class Natora {
         control = new Controller(this); // Listen for input
         renderer = new Renderer(this);
         currentScreen = new ScreenMenu(this); // Create Menu Screen
-        
-        currentScreen.updateMovement();
-        renderer.render();
-        currentScreen.mouseUpdate();
-        
-        try {
-            Thread.sleep(1000);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         
         while(!Display.isCloseRequested()) { // Game Loop
             currentScreen.updateMovement();

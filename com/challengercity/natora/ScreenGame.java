@@ -15,7 +15,7 @@ public class ScreenGame extends Screen {
 
     public ScreenGame(Natora nt) {
         super(nt);
-        addToRenderList(nt.thePlayer = new EntityPlayer(Natora.screenWidth/2-16,Natora.screenHeight/2-16,32,32,0,0,16,16,this,nt.username));
+        addToRenderList(nt.thePlayer = new EntityPlayer(Natora.screenWidth/2-16,Natora.screenHeight/2-16,32,32,0,0,32,32,this,nt.username));
         Natora.gs=EnumGameState.INGAME;
     }
     

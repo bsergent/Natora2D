@@ -17,7 +17,8 @@ public class GUIImage extends GUI {
     
     public GUIImage (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen screen, String texName, String texExt) {
         super(x, y, width, height, picX, picY, picWidth, picHeight, screen);
-        this.texture = ResourceLoader.loadImage(texName, texExt);
+        this.texName=texName;
+        this.texExt=texExt;
     }
     
     public void delete() {
@@ -26,6 +27,9 @@ public class GUIImage extends GUI {
     
     public void draw() {
         if (visible) {
+            if (texture == null) {
+            texture = ResourceLoader.loadImage(texName, texExt);
+            }
             texture.bind();
 
             glBegin(GL_QUADS);

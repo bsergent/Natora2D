@@ -43,6 +43,20 @@ public class EntityPlayer extends Entity {
         this.ani = ani;
     } 
     
+    public void move() {
+        if (posX+velX>0&&posX+velX+width<Natora.screenWidth && posY+velY>0&&posY+velY+height<Natora.screenHeight) {
+            posX += velX;
+            posY += velY;
+        }
+        for (int i = 0; i<screen.renderList.size(); i++) {
+            RenderableObject ro = screen.renderList.get(i);
+            if (this.intersects(ro)&&ro instanceof EntityMonster) {
+                EntityMonster em = (EntityMonster) ro;
+                em.kill(this);
+            }
+        }
+    }
+    
     public void draw() {
         if (texture == null) {
             texture = ResourceLoader.loadImage("EntityPlayer", ".PNG");

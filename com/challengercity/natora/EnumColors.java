@@ -12,6 +12,7 @@ import java.awt.*;
 public class EnumColors {
     
     protected static Color neonGreen = new Color(60,209,46);
+    protected static Color darkGreen = new Color(30,105,23);
     protected static Color white = new Color(255,255,255);
     protected static Color black = new Color(0,0,0);
     protected static Color grey = new Color(213,213,213);
