@@ -21,15 +21,37 @@ public class ScreenGame extends Screen {
         Natora.gs=EnumGameState.INGAME;
 
         addToRenderList(new TileRock(10, 100, this));
+        addToRenderList(new TileRock(10, 132, this));
+        addToRenderList(new TileRock(10, 164, this));
+        addToRenderList(new TileRock(10, 196, this));
+        addToRenderList(new TileRock(10, 228, this));
+        
+        addToRenderList(new TileDirt(42, 100, this));
+        addToRenderList(new TileDirt(42, 132, this));
+        addToRenderList(new TileDirt(42, 164, this));
+        addToRenderList(new TileDirt(42, 196, this));
+        addToRenderList(new TileDirt(42, 228, this));
+        
+        addToRenderList(new TileDirt(106, 100, this));
+        addToRenderList(new TileDirt(106, 132, this));
+        addToRenderList(new TileDirt(106, 164, this));
+        addToRenderList(new TileDirt(138, 196, this));
+        addToRenderList(new TileDirt(138, 228, this));
+        
+        addToRenderList(new ItemCoin(74, 100, this));
+        addToRenderList(new ItemRock(74, 116, this));
+        addToRenderList(new ItemDirt(74, 132, this));
         
         addToRenderList(new GUIText(10, 9, this, "Version: "+Natora.version, 16, false));
         addToRenderList(new GUITextFPS(10, 29, this, 16, false));
         addToRenderList(new GUITextEnt(10, 49, this, 16, false));
         addToRenderList(new GUITextTile(10, 69, this, 16, false));
         addToRenderList(new GUITextWealth(10, 89, this, 16, false));
+        addToRenderList(new GUITextItems(10, 109, this, 16, false));
         
-        addToRenderList(new GUIText(10, Natora.screenHeight-60, this, "'Arrow Keys' - Movement", 16, false));
-        addToRenderList(new GUIText(10, Natora.screenHeight-40, this, "'C' - Create Passive NPC", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-80, this, "'Arrow Keys' - Movement", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-60, this, "'C' - Create Passive NPC", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-40, this, "'Z' - Perform Action", 16, false));
         addToRenderList(new GUIText(10, Natora.screenHeight-20, this, "'M' - Main Menu", 16, false));
     }
     
@@ -111,6 +133,28 @@ public class ScreenGame extends Screen {
         public void draw() {
             if (visible) {
                 label = "Coins: "+nt.thePlayer.wealth;
+                if (font == null) {
+                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                }
+                int strPosX = posX;
+                int strPosY = posY;
+                if (centered) {
+                    strPosX = posX+width/2-(font.getWidth(label)/2);
+                    strPosY = posY+height/2-(font.getHeight(label)/2);
+                }
+                font.drawString(strPosX, strPosY, label);
+            }
+        }
+    }
+    
+    public class GUITextItems extends GUIText {
+        public GUITextItems (int x, int y, Screen screen, int fontSize, boolean centered) {
+            super(x, y, screen, "Blank", fontSize, centered);
+        }
+        
+        public void draw() {
+            if (visible) {
+                label = "Items: "+nt.thePlayer.items;
                 if (font == null) {
                     font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
                 }

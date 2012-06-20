@@ -12,7 +12,7 @@ package com.challengercity.natora;
 public class ItemDirt extends Item {
 
     public ItemDirt(int x, int y, Screen sc) {
-        super(x, y, 0, 0, "Dirt", sc);
+        super(x, y, 32, 0, "Dirt", sc);
     }
     
 }

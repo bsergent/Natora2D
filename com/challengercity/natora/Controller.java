@@ -80,6 +80,17 @@ public class Controller {
                     cooldown = 15;
                 }
             }
+            if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+                Random gen = new Random();
+                if (cooldown<=0) {
+                    nt.thePlayer.performAction();
+                    cooldown = 10;
+                }
+            }
+            if (cooldown <= 0) {
+                nt.thePlayer.performingAction = false;
+            }
+            
             if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                 // Pause Game
             }

@@ -14,7 +14,7 @@ import org.newdawn.slick.opengl.Texture;
  */
 public abstract class Tile extends RenderableObject {
     
-    protected int posX, posY, width, height, velX, velY;
+    protected int velX, velY;
     protected int picX, picY, picWidth, picHeight;
     protected Texture texture;
     protected Random randGen = new Random();
@@ -35,6 +35,7 @@ public abstract class Tile extends RenderableObject {
         this.name=name;
         this.hardness=hardness;
         this.screen=screen;
+        this.id=screen.getRenderId();
         
         System.out.println("[Tile] Tile created "+posX+","+posY+" - "+name);
           

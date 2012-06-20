@@ -37,8 +37,9 @@ public abstract class RenderableObject {
 	return hitbox.intersects(new Rectangle(ro.posX, ro.posY, ro.width, ro.height));
     }
     
-    public boolean futureIntersects(RenderableObject ro, int futureX, int futureY) {
-        hitbox.setBounds(futureX, futureY, width, height);
-	return hitbox.intersects(new Rectangle(ro.posX, ro.posY, ro.width, ro.height));
+    public boolean offsetIntersects(RenderableObject ro, int offsetX, int offsetY) {
+        hitbox.setBounds(posX, posY, width, height);
+        Rectangle offsetHitbox = new Rectangle(posX+offsetX, posY+offsetY, width, height);
+	return offsetHitbox.intersects(new Rectangle(ro.posX, ro.posY, ro.width, ro.height));
     }
 }

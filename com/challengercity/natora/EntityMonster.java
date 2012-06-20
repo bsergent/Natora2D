@@ -86,20 +86,27 @@ public class EntityMonster extends Entity {
             movementChangeDelay=60;
         }
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) { // Check screen boundries
-            posX = posX + (int)(velX*delta);
-            posY = posY + (int)(velY*delta);
-//            for (int i = 0; i<screen.renderList.size(); i++) {
-//                RenderableObject ro = screen.renderList.get(i);
-//                if (this.intersects(ro)) {
-//                    posX -= velX;
-//                    posY -= velY;
-//                }
-//            }
+            boolean clear = true;
+            for (int i = 0; i<screen.renderTileList.size(); i++) {
+                if (this.offsetIntersects((RenderableObject) screen.renderTileList.get(i), (int)(velX*delta), (int)(velY*delta))) {
+                    clear = false;
+                }
+            }
+            if (clear) {
+                posX = posX + (int)(velX*delta);
+                posY = posY + (int)(velY*delta);
+            }
         }
         movementChangeDelay--;
         if (velX==0&&velY==0) {
             ani=0;
         }
+
+            for (int i = 0; i<screen.renderTileList.size(); i++) {
+                if (this.intersects((RenderableObject) screen.renderTileList.get(i))) {
+                    delete();
+                }
+            }
     }
     
     public void draw() {

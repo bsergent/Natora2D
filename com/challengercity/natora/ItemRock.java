@@ -12,7 +12,7 @@ package com.challengercity.natora;
 public class ItemRock extends Item {
 
     public ItemRock(int x, int y, Screen sc) {
-        super(x, y, 0, 0, "Rock", sc);
+        super(x, y, 16, 0, "Rock", sc);
     }
     
 }
