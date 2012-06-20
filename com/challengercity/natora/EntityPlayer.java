@@ -122,11 +122,11 @@ public class EntityPlayer extends Entity {
     
     public void performAction2() { // Place/Use
         boolean clear = true;
-        TileRock tr;
+        TileStone tr;
         switch (dir) {
             case 0:
                 if (items>0) {
-                    tr = new TileRock(posX+width, posY, screen);
+                    tr = new TileStone(posX+width, posY, screen);
                     clear = true;
                     for (int i = 0; i<screen.renderTileList.size(); i++) {
                         if (tr.intersects(screen.renderTileList.get(i))) {
@@ -146,7 +146,7 @@ public class EntityPlayer extends Entity {
                 break;
             case 1:
                 if (items>0) {
-                    tr = new TileRock(posX, posY-32, screen);
+                    tr = new TileStone(posX, posY-32, screen);
                     clear = true;
                     for (int i = 0; i<screen.renderTileList.size(); i++) {
                         if (tr.intersects(screen.renderTileList.get(i))) {
@@ -166,7 +166,7 @@ public class EntityPlayer extends Entity {
                 break;
             case 2:
                 if (items>0) {
-                    tr = new TileRock(posX-32, posY, screen);
+                    tr = new TileStone(posX-32, posY, screen);
                     clear = true;
                     for (int i = 0; i<screen.renderTileList.size(); i++) {
                         if (tr.intersects(screen.renderTileList.get(i))) {
@@ -186,7 +186,7 @@ public class EntityPlayer extends Entity {
                 break;
             case 3:
                 if (items>0) {
-                    tr = new TileRock(posX, posY+height, screen);
+                    tr = new TileStone(posX, posY+height, screen);
                     clear = true;
                     for (int i = 0; i<screen.renderTileList.size(); i++) {
                         if (tr.intersects(screen.renderTileList.get(i))) {

@@ -11,11 +11,13 @@ package com.challengercity.natora;
  */
 public class Gen {
 
-    public static void genMain() {
-        
+    public static void genMain(World world) {
+        for (int i = 0; i < world.tileCount; i++) {
+            world.setTile(i, world.TILE_STONE);
+        }
     }
     
-    public static void genTunnels() {
+    public static void genTunnels(World world) {
         
     }
     

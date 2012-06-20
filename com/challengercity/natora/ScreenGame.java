@@ -20,11 +20,11 @@ public class ScreenGame extends Screen {
         addToRenderList(nt.thePlayer = new EntityPlayer(Natora.screenWidth/2-16,Natora.screenHeight/2-16,32,32,this,nt.username));
         Natora.gs=EnumGameState.INGAME;
 
-        addToRenderList(new TileRock(10, 100, this));
-        addToRenderList(new TileRock(10, 132, this));
-        addToRenderList(new TileRock(10, 164, this));
-        addToRenderList(new TileRock(10, 196, this));
-        addToRenderList(new TileRock(10, 228, this));
+        addToRenderList(new TileStone(10, 100, this));
+        addToRenderList(new TileStone(10, 132, this));
+        addToRenderList(new TileStone(10, 164, this));
+        addToRenderList(new TileStone(10, 196, this));
+        addToRenderList(new TileStone(10, 228, this));
         
         addToRenderList(new TileDirt(42, 100, this));
         addToRenderList(new TileDirt(42, 132, this));
@@ -39,7 +39,7 @@ public class ScreenGame extends Screen {
         addToRenderList(new TileDirt(138, 228, this));
         
         addToRenderList(new ItemCoin(74, 100, this));
-        addToRenderList(new ItemRock(74, 116, this));
+        addToRenderList(new ItemStone(74, 116, this));
         addToRenderList(new ItemDirt(74, 132, this));
         
         addToRenderList(new GUIText(10, 9, this, "Version: "+Natora.version, 16, false));

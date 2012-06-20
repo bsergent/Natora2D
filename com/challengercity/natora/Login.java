@@ -245,9 +245,10 @@ public class Login extends javax.swing.JFrame {
         String response2 = response1.replaceAll("\"", "");
         String[] response3 = response2.split("=");
         if (response3[0].equals("1")) {
+            Thread startThread = new Thread(new StartThread("startThread", response3[1]));
+            startThread.start();
             this.dispose();
-            Natora nt = new Natora(response3[1]);
-            nt.run();
+            startThread.stop();
             System.out.println("[Login] Starting Natora");
         } else {
             errorLabel.setText("Incorrect Username and Password.");
@@ -304,6 +305,30 @@ public class Login extends javax.swing.JFrame {
           }
         }
       }
+    
+    class StartThread implements Runnable {
+
+	Thread runner;
+        String username;
+	public StartThread() {
+	}
+	public StartThread(String threadName, String username) {
+                this.username=username;
+		runner = new Thread(this, threadName);
+		System.out.println(runner.getName());
+		runner.start();
+	}
+	public void run() {
+            try {
+                Thread.sleep(100);
+            } catch (Exception ex) {
+                
+            }
+            Natora nt = new Natora(username);
+            nt.run();
+  
+	}
+    }
     
     /**
      * @param args the command line arguments
