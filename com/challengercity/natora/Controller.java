@@ -81,9 +81,14 @@ public class Controller {
                 }
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-                Random gen = new Random();
                 if (cooldown<=0) {
-                    nt.thePlayer.performAction();
+                    nt.thePlayer.performAction1();
+                    cooldown = 10;
+                }
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+                if (cooldown<=0) {
+                    nt.thePlayer.performAction2();
                     cooldown = 10;
                 }
             }

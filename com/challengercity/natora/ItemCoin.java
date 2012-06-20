@@ -15,7 +15,7 @@ public class ItemCoin extends Item {
         super(x, y, 0, 0, "Coin", sc);
     }
     
-    public void updateMovement(long delta) {
+    public void update(long delta) {
         for (int i = 0; i<screen.renderEntityList.size(); i++) {
             if (this.offsetIntersects((RenderableObject) screen.renderEntityList.get(i), (int)(velX*delta), (int)(velY*delta))) {
                 if (screen.renderEntityList.get(i) instanceof EntityPlayer) {

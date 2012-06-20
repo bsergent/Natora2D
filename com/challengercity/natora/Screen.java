@@ -6,6 +6,7 @@
 package com.challengercity.natora;
 
 import java.util.ArrayList;
+import static org.lwjgl.opengl.GL11.*;
 /**
  *
  * @author Ben Sergent V/ha1fBit
@@ -128,7 +129,7 @@ public abstract class Screen {
         for (int i = 0; i<renderEntityList.size(); i++) {
             if (renderEntityList.get(i) instanceof Entity) {
                 Entity ent = (Entity) renderEntityList.get(i);
-                ent.updateMovement(delta);
+                ent.update(delta);
             }
         }
     }

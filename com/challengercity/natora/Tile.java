@@ -36,8 +36,6 @@ public abstract class Tile extends RenderableObject {
         this.hardness=hardness;
         this.screen=screen;
         this.id=screen.getRenderId();
-        
-        System.out.println("[Tile] Tile created "+posX+","+posY+" - "+name);
           
     }
     

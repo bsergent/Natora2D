@@ -5,6 +5,7 @@
 package com.challengercity.natora;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.*;
@@ -20,14 +21,16 @@ public class EntityPlayer extends Entity {
     private int aniDelay = 10;
     public boolean performingAction = false;
     private Texture texture2;
+    private int maxHealth = 20;
+    public int health = 20;
+    private Texture healthTexture;
     public int wealth = 0;
-    public int items = 0;
+    public int items = 10;
     private String username;
 
     public EntityPlayer(int x, int y, int width, int height, Screen sc, String username) {
         super(x, y, width, height, 0, 0, 32, 32, sc);
         this.username = username;
-        System.out.println("[Entity] Entity created - "+x+","+y+" - "+"Player - "+username);
     }
     
     public String getUsername() {
@@ -50,7 +53,12 @@ public class EntityPlayer extends Entity {
         this.ani = ani;
     }
     
-    public void performAction() {
+    public Rectangle getHitbox(){
+        hitbox.setBounds(posX+4, posY, width-8, height);
+        return hitbox;
+    }
+    
+    public void performAction1() { // Attack/Mine
         performingAction = true;
         switch (dir) {
             case 0:
@@ -63,7 +71,7 @@ public class EntityPlayer extends Entity {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.offsetIntersects(ro, 16, 0)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
-                        em.kill(this);
+                        em.health=em.health-5;
                     }
                 }
                 break;
@@ -77,7 +85,7 @@ public class EntityPlayer extends Entity {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.offsetIntersects(ro, 0, -16)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
-                        em.kill(this);
+                        em.health=em.health-5;
                     }
                 }
                 break;
@@ -91,7 +99,7 @@ public class EntityPlayer extends Entity {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.offsetIntersects(ro, -16, 0)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
-                        em.kill(this);
+                        em.health=em.health-5;
                     }
                 }
                 break;
@@ -105,14 +113,101 @@ public class EntityPlayer extends Entity {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.offsetIntersects(ro, 0, 16)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
-                        em.kill(this);
+                        em.health=em.health-5;
                     }
                 }
                 break;
         }
     }
     
-    public void updateMovement(long delta) {
+    public void performAction2() { // Place/Use
+        boolean clear = true;
+        TileRock tr;
+        switch (dir) {
+            case 0:
+                if (items>0) {
+                    tr = new TileRock(posX+width, posY, screen);
+                    clear = true;
+                    for (int i = 0; i<screen.renderTileList.size(); i++) {
+                        if (tr.intersects(screen.renderTileList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
+                        if (tr.intersects(screen.renderEntityList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    if (clear) {
+                        screen.addToRenderList(tr);
+                        items--;
+                    }
+                }
+                break;
+            case 1:
+                if (items>0) {
+                    tr = new TileRock(posX, posY-32, screen);
+                    clear = true;
+                    for (int i = 0; i<screen.renderTileList.size(); i++) {
+                        if (tr.intersects(screen.renderTileList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
+                        if (tr.intersects(screen.renderEntityList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    if (clear) {
+                        screen.addToRenderList(tr);
+                        items--;
+                    }
+                }
+                break;
+            case 2:
+                if (items>0) {
+                    tr = new TileRock(posX-32, posY, screen);
+                    clear = true;
+                    for (int i = 0; i<screen.renderTileList.size(); i++) {
+                        if (tr.intersects(screen.renderTileList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
+                        if (tr.intersects(screen.renderEntityList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    if (clear) {
+                        screen.addToRenderList(tr);
+                        items--;
+                    }
+                }
+                break;
+            case 3:
+                if (items>0) {
+                    tr = new TileRock(posX, posY+height, screen);
+                    clear = true;
+                    for (int i = 0; i<screen.renderTileList.size(); i++) {
+                        if (tr.intersects(screen.renderTileList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
+                        if (tr.intersects(screen.renderEntityList.get(i))) {
+                            clear = false;
+                        }
+                    }
+                    if (clear) {
+                        screen.addToRenderList(tr);
+                        items--;
+                    }
+                }
+                break;
+        }
+    }
+    
+    public void update(long delta) {
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight&&!performingAction) {
             boolean clear = true;
             for (int i = 0; i<screen.renderTileList.size(); i++) {
@@ -140,6 +235,9 @@ public class EntityPlayer extends Entity {
         if (texture2 == null) {
             texture2 = ResourceLoader.loadImage("Action", ".PNG");
         }
+        if (healthTexture == null) {
+            healthTexture = ResourceLoader.loadImage("HealthBar", ".PNG");
+        }
         
         /* Main Animation and Texture */
         texture.bind();
@@ -155,6 +253,21 @@ public class EntityPlayer extends Entity {
 
         glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), texture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, texture.getImageHeight()));  // Lower-Left
         glVertex2i(posX, posY+height);
+        glEnd();
+        
+        healthTexture.bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f((float)health/maxHealth, 0.0f);  // Upper-Left
+        glVertex2i(posX, posY-4);
+
+        glTexCoord2f((float)health/maxHealth-Renderer.getTextureFloat(1, healthTexture.getImageHeight()), 0.0f);  // Upper-Right
+        glVertex2i((int)(posX+width/((float)maxHealth/health)), posY-4);
+
+        glTexCoord2f((float)health/maxHealth-Renderer.getTextureFloat(1, healthTexture.getImageHeight()), Renderer.getTextureFloat(1, healthTexture.getImageHeight()));  // Lower-Right
+        glVertex2i((int)(posX+width/((float)maxHealth/health)), posY-1);
+
+        glTexCoord2f((float)health/maxHealth, Renderer.getTextureFloat(1, healthTexture.getImageHeight()));  // Lower-Left
+        glVertex2i(posX, posY-1);
         glEnd();
         
         /* Action Animation */

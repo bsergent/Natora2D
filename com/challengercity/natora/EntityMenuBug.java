@@ -29,7 +29,6 @@ public class EntityMenuBug extends Entity {
         this.xBounds2=xBounds2;
         this.yBounds1=yBounds1;
         this.yBounds2=yBounds2;
-        System.out.println("[Entity] Entity created - "+x+","+y+" - "+"MenuBug");
     }
 
     public int getDir() {
@@ -48,7 +47,7 @@ public class EntityMenuBug extends Entity {
         this.ani = ani;
     } 
     
-    public void updateMovement(long delta) { // Fix from getting stuck at borders, check future bounds before going
+    public void update(long delta) { // Fix from getting stuck at borders, check future bounds before going
         if (movementChangeDelay<=0) {
             if (randGen.nextBoolean()) {
                 if (randGen.nextInt(3)==0) {

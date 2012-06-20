@@ -49,9 +49,10 @@ public class ScreenGame extends Screen {
         addToRenderList(new GUITextWealth(10, 89, this, 16, false));
         addToRenderList(new GUITextItems(10, 109, this, 16, false));
         
-        addToRenderList(new GUIText(10, Natora.screenHeight-80, this, "'Arrow Keys' - Movement", 16, false));
-        addToRenderList(new GUIText(10, Natora.screenHeight-60, this, "'C' - Create Passive NPC", 16, false));
-        addToRenderList(new GUIText(10, Natora.screenHeight-40, this, "'Z' - Perform Action", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-100, this, "'Arrow Keys' - Movement", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-80, this, "'C' - Create Passive NPC", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-60, this, "'Z' - Attack/Mine", 16, false));
+        addToRenderList(new GUIText(10, Natora.screenHeight-40, this, "'X' - Place/Use", 16, false));
         addToRenderList(new GUIText(10, Natora.screenHeight-20, this, "'M' - Main Menu", 16, false));
     }
     

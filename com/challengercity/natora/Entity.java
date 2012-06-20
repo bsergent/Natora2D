@@ -86,7 +86,7 @@ public abstract class Entity extends RenderableObject {
         this.width = width;
     }
     
-    public void updateMovement(long delta) {
+    public void update(long delta) {
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) {
             posX = posX + (int)(velX*delta);
             posY = posY + (int)(velY*delta);
@@ -97,7 +97,7 @@ public abstract class Entity extends RenderableObject {
         screen.removeFromRenderList(this);
     }
     
-    public void kill(Entity ent) {
+    public void kill() {
         screen.addToRenderList(new ItemCoin(posX+(randGen.nextInt(width-16)), posY+(randGen.nextInt(height-16)), screen));
         screen.removeFromRenderList(this);
     }

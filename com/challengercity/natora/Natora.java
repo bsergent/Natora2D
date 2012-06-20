@@ -65,7 +65,7 @@ public class Natora {
     }
     
     public void run() {
-        version = "0.1.0 Alpha";
+        version = "0.1.1 Alpha";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
