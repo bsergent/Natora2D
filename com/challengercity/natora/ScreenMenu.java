@@ -6,6 +6,7 @@
 package com.challengercity.natora;
 
 import java.util.ArrayList;
+import java.util.Random;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.*;
@@ -38,6 +39,13 @@ public class ScreenMenu extends Screen {
         addToRenderList(b);
         b = new GUIText(Natora.screenWidth/2-256+287, 20+108, this, "v"+Natora.version, 12, false);
         addToRenderList(b);
+        b = new GUIText(Natora.screenWidth/2-256+200, 20+120, this, "Logged in as "+nt.username, 12, false);
+        addToRenderList(b);
+        Random gen = new Random();
+        for (int count = 0; count<=gen.nextInt(30); count++) {
+            int dim = gen.nextInt(16)+16;
+            addToRenderList(new EntityMenuBug(gen.nextInt(nt.screenWidth-32),gen.nextInt(nt.screenHeight-32), dim, dim, this, 0, 0, Natora.screenWidth, Natora.screenHeight));
+        }
         //b = new GUIImageMoving(0, 0, Natora.screenWidth, Natora.screenHeight, 1, 1, 8, 8, this, "BlackDot", ".PNG");
         //addToRenderList(b);
         //b = new GUIImageMoving(Natora.screenWidth/2-100, Natora.screenHeight/2-100, 200, 200, 0, 148, 100, 100, this, "NatoraLogo", ".PNG");
@@ -50,19 +58,12 @@ public class ScreenMenu extends Screen {
             nt.currentScreen = new ScreenGame(nt);
         }
         if (id==1) {
-            System.out.println("[Natora] Multiplayer is not yet finished.");
+            Renderer.removeFromRenderList(this);
+            nt.currentScreen = new ScreenMultiPlayer(nt);
         }
         if (id==2) {
-            try {
-                DisplayMode[] modes = Display.getAvailableDisplayModes();
-                for (int i=0;i<modes.length;i++) {
-                    DisplayMode current = modes[i];
-                    System.out.println(current.getWidth() + "x" + current.getHeight() + "x" +
-                                        current.getBitsPerPixel() + " " + current.getFrequency() + "Hz");
-                }
-            } catch (Exception ex) {
-                
-            }
+            Renderer.removeFromRenderList(this);
+            nt.currentScreen = new ScreenOptions(nt);
         }
         if (id==3) {
             Renderer.removeFromRenderList(this);

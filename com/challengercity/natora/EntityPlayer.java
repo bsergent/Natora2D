@@ -17,11 +17,12 @@ public class EntityPlayer extends Entity {
     private int dir = 0;
     private int ani = 0;
     protected TrueTypeFont font;
-    private int aniDelay = 15;
+    private int aniDelay = 10;
+    public int wealth = 0;
     private String username;
 
-    public EntityPlayer(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen sc, String username) {
-        super(x, y, width, height, picX, picY, picWidth, picHeight, sc);
+    public EntityPlayer(int x, int y, int width, int height, Screen sc, String username) {
+        super(x, y, width, height, 0, 0, 32, 32, sc);
         this.username = username;
         System.out.println("[Entity] Entity created - "+x+","+y+" - "+"Player - "+username);
     }
@@ -46,13 +47,21 @@ public class EntityPlayer extends Entity {
         this.ani = ani;
     } 
     
-    public void move(long delta) {
+    public void updateMovement(long delta) {
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) {
-            posX = posX + (int)(velX*delta);
-            posY = posY + (int)(velY*delta);
+            boolean clear = true;
+            for (int i = 0; i<screen.renderTileList.size(); i++) {
+                if (this.futureIntersects((RenderableObject) screen.renderTileList.get(i), posX + (int)(velX*delta), posY + (int)(velY*delta))) {
+                    clear = false;
+                }
+            }
+            if (clear) {
+                posX = posX + (int)(velX*delta);
+                posY = posY + (int)(velY*delta);
+            }
         }
-        for (int i = 0; i<screen.renderList.size(); i++) {
-            RenderableObject ro = screen.renderList.get(i);
+        for (int i = 0; i<screen.renderEntityList.size(); i++) {
+            RenderableObject ro = screen.renderEntityList.get(i);
             if (this.intersects(ro)&&ro instanceof EntityMonster) {
                 EntityMonster em = (EntityMonster) ro;
                 em.kill(this);
@@ -90,8 +99,9 @@ public class EntityPlayer extends Entity {
         int strPosY = posY+height+2;
         font.drawString(strPosX, strPosY, username);
         
+        
         if (aniDelay<=0) {
-            aniDelay=15;
+            aniDelay=10;
             if (ani>=4) {
                 ani=0;
             }

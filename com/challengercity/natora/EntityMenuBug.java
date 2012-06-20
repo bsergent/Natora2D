@@ -12,18 +12,24 @@ import java.util.Random;
  *
  * @author Ben Sergent V/ha1fBit
  */
-public class EntityMonster extends Entity {
+public class EntityMenuBug extends Entity {
     
     private int dir = 0;
     private int ani = 0;
+    private int xBounds1, yBounds1, xBounds2, yBounds2;
     private int aniDelay = 15;
-    private int movementChangeDelay = 0;
+    private int movementChangeDelay;
     private Random randGen = new Random();
     
 
-    public EntityMonster(int x, int y, int width, int height, Screen sc) {
-        super(x, y, width, height, 0, 0, 16, 16, sc);
-        System.out.println("[Entity] Entity created - "+x+","+y+" - "+"Monster");
+    public EntityMenuBug(int x, int y, int width, int height, Screen sc, int xBounds1, int yBounds1, int xBounds2, int yBounds2) {
+        super(x, y, width, height, 0, 0, 32, 32, sc);
+        movementChangeDelay = randGen.nextInt(60);
+        this.xBounds1=xBounds1;
+        this.xBounds2=xBounds2;
+        this.yBounds1=yBounds1;
+        this.yBounds2=yBounds2;
+        System.out.println("[Entity] Entity created - "+x+","+y+" - "+"MenuBug");
     }
 
     public int getDir() {
@@ -83,9 +89,9 @@ public class EntityMonster extends Entity {
                     dir=1;
                 }
             }
-            movementChangeDelay=60;
+            movementChangeDelay=randGen.nextInt(60);
         }
-        if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) { // Check screen boundries
+        if (posX+velX*delta>xBounds1&&posX+velX*delta+width<xBounds2 && posY+velY*delta>yBounds1&&posY+velY*delta+height<yBounds2) { // Check screen boundries
             posX = posX + (int)(velX*delta);
             posY = posY + (int)(velY*delta);
 //            for (int i = 0; i<screen.renderList.size(); i++) {
@@ -104,7 +110,7 @@ public class EntityMonster extends Entity {
     
     public void draw() {
         if (texture == null) {
-            texture = ResourceLoader.loadImage("EntityMonster", ".PNG");
+            texture = ResourceLoader.loadImage("MenuBug", ".PNG");
         }
         texture.bind();
         

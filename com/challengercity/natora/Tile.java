@@ -4,30 +4,39 @@
  */
 package com.challengercity.natora;
 
+import java.awt.Font;
+import java.util.Random;
 import static org.lwjgl.opengl.GL11.*;
+import org.newdawn.slick.opengl.Texture;
 /**
  *
  * @author Ben Sergent V
  */
-public class Tile extends RenderableObject {
+public abstract class Tile extends RenderableObject {
     
-    private float posX, posY, width, height, velX, velY;
-    private int picX1, picY1, picX2, picY2;
-    protected EnumGameState gs;
-    private String name;
-    private int hardness;
+    protected int posX, posY, width, height, velX, velY;
+    protected int picX, picY, picWidth, picHeight;
+    protected Texture texture;
+    protected Random randGen = new Random();
+    protected Screen screen;
+    protected String name;
+    protected int hardness;
     
-    public Tile(float x, float y, int picX1, int picY1, int picX2, int picY2, EnumGameState gs, String name, int hardness) {
+    public Tile(int x, int y, int picX, int picY, String name, int hardness, Screen screen) {
         
         this.posX=x;
         this.posY=y;
-        this.picX1=picX1;
-        this.picY1=picY1;
-        this.picX2=picX2;
-        this.picY2=picY1;
+        this.width=32;
+        this.height=32;
+        this.picX=picX;
+        this.picY=picY;
+        this.picWidth=32;
+        this.picHeight=32;
         this.name=name;
         this.hardness=hardness;
-        this.gs = gs;
+        this.screen=screen;
+        
+        System.out.println("[Tile] Tile created "+posX+","+posY+" - "+name);
           
     }
     
@@ -39,10 +48,7 @@ public class Tile extends RenderableObject {
         return posY;
     }
     
-    public void breakTile() {
-        // Drop item(s)
-        delete();
-    }
+    public abstract void breakTile();
     
     public int getHardness() {
         return hardness;
@@ -57,15 +63,25 @@ public class Tile extends RenderableObject {
     }
     
     public void draw() {
-        glRectd(posX,posY,posX+width,posY+height);
-    }
-    
-    // Tile Declaration
-    //public static final Tile stone;
-    
-    // Tile Creation
-    static
-    {
-        //stone = new Tile();
+        if (visible) {
+            if (texture == null) {
+                texture = ResourceLoader.loadImage("Tiles", ".PNG");
+            }
+            texture.bind();
+
+            glBegin(GL_QUADS);
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Left
+            glVertex2i(posX, posY);
+
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Right
+            glVertex2i(posX+width, posY);
+
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Right
+            glVertex2i(posX+width, posY+height);
+
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Left
+            glVertex2i(posX, posY+height);
+            glEnd();
+        }
     }
 }

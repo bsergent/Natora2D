@@ -34,6 +34,11 @@ public abstract class RenderableObject {
     
     public boolean intersects(RenderableObject ro) {
         hitbox.setBounds(posX, posY, width, height);
-	return hitbox.intersects(ro.posX, ro.posY, ro.width, ro.height);
+	return hitbox.intersects(new Rectangle(ro.posX, ro.posY, ro.width, ro.height));
+    }
+    
+    public boolean futureIntersects(RenderableObject ro, int futureX, int futureY) {
+        hitbox.setBounds(futureX, futureY, width, height);
+	return hitbox.intersects(new Rectangle(ro.posX, ro.posY, ro.width, ro.height));
     }
 }

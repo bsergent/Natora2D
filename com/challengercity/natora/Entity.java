@@ -6,6 +6,7 @@ package com.challengercity.natora;
 
 import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.opengl.Texture;
+import java.util.Random;
 /**
  *
  * @author Ben Sergent V
@@ -13,8 +14,11 @@ import org.newdawn.slick.opengl.Texture;
 
 public abstract class Entity extends RenderableObject {
     
-    protected int posX, posY, width, height, picX, picY, picWidth, picHeight;
+    protected int picX, picY, picWidth, picHeight;
     protected float velX, velY;
+    public String name;
+    private int aniCreation = 0;
+    private Random randGen = new Random();
     protected Texture texture;
     protected Screen screen;
     
@@ -22,12 +26,12 @@ public abstract class Entity extends RenderableObject {
         
         this.posX=x;
         this.posY=y;
+        this.width=width;
+        this.height=height;
         this.picX=picX;
         this.picY=picY;
         this.picWidth=picWidth;
         this.picHeight=picHeight;
-        this.width=width;
-        this.height=height;
         this.screen = sc;
         this.id = screen.getRenderId();
         
@@ -82,7 +86,7 @@ public abstract class Entity extends RenderableObject {
         this.width = width;
     }
     
-    public void move(long delta) {
+    public void updateMovement(long delta) {
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) {
             posX = posX + (int)(velX*delta);
             posY = posY + (int)(velY*delta);
@@ -94,7 +98,7 @@ public abstract class Entity extends RenderableObject {
     }
     
     public void kill(Entity ent) {
-        // Drop & killed by
+        screen.addToRenderList(new ItemCoin(posX+(randGen.nextInt(width-16)), posY+(randGen.nextInt(height-16)), screen));
         screen.removeFromRenderList(this);
     }
     

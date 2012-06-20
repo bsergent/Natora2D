@@ -35,32 +35,23 @@ public class Natora {
     }
     
     public static void main(String[] args) {
-        
         Natora nt = new Natora(args[0]);
         nt.run();
-        
-    }
-    
-    public void startup(String username) {
-        
-        Natora nt = new Natora(username);
-        nt.run();
-        
     }
     
     public long getTime() {
         return (Sys.getTime() * 1000) / Sys.getTimerResolution();
     }
     
-    private int getDelta() {
+    public int getDelta() {
         long time = getTime();
         int delta = (int) (time - lastFrame);
         lastFrame = time;
-        lastDelta = delta;
 
         if (delta > 70) {
             delta = 70;
         }
+        lastDelta = delta;
         return delta;
     }
     
@@ -78,6 +69,8 @@ public class Natora {
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
+        //screenWidth=1600;
+        //screenHeight=1200;
         try {
             Display.setDisplayMode(new DisplayMode(screenWidth, screenHeight));
             //Display.setFullscreen(true);
@@ -87,14 +80,15 @@ public class Natora {
             ex.printStackTrace();
         }
         
-        control = new Controller(this); // Listen for input
         renderer = new Renderer(this);
         currentScreen = new ScreenMenu(this); // Create Menu Screen
+        control = new Controller(this); // Listen for input
         
         lastFPS = getTime();
         getDelta();
         
         while(!Display.isCloseRequested()) { // Game Loop
+            control.checkInput();
             currentScreen.updateMovement(getDelta());
             renderer.render();
             currentScreen.mouseUpdate();

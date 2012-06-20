@@ -25,70 +25,71 @@ public class Controller {
         } catch (org.lwjgl.LWJGLException ex) {
             System.out.println("Keyboard could not be initialized.");
         }
-        Thread inputThread = new Thread(new InputThread(), "inputThread");
-        inputThread.start();
+        System.out.println("[ControlListener] Initialized");
     }
     
-    class InputThread implements Runnable {
-	Thread runner;
-	public void run() {
-            System.out.println("[ControlListener] Initialized");
-            while(true) {
+    public void checkInput() {
+            switch(nt.gs) {
+            case MAINMENU:
                 if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                     System.exit(0);
                 }
-                switch(nt.gs) {
-                    case MAINMENU:
-                        break;
-                    // Split
-                    case BRANCHMENU:
-                        if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
-                            Renderer.removeFromRenderList(nt.currentScreen);
-                            nt.currentScreen = new ScreenMenu(nt);
-                        }
-                        break;
-                    // Split
-                    case INGAME:
-                    if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                        nt.thePlayer.setVelY(-0.35f);
-                        nt.thePlayer.setVelX(0);
-                        nt.thePlayer.setDir(1);
-                    } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                        nt.thePlayer.setVelY(0.35f);
-                        nt.thePlayer.setVelX(0);
-                        nt.thePlayer.setDir(3);
-                    } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                        nt.thePlayer.setVelX(-0.35f);
-                        nt.thePlayer.setVelY(0);
-                        nt.thePlayer.setDir(2);
-                    } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                        nt.thePlayer.setVelX(0.35f);
-                        nt.thePlayer.setVelY(0);
-                        nt.thePlayer.setDir(0);
-                    } else {
-                        nt.thePlayer.setVelX(0);
-                        nt.thePlayer.setVelY(0);
-                    }
-                    if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
-                        Random gen = new Random();
-                        if (cooldown<=0) {
-                            nt.currentScreen.addToRenderList(new EntityMonster(gen.nextInt(nt.screenWidth-32),gen.nextInt(nt.screenHeight-32),32,32,0,0,16,16,nt.currentScreen));
-                            cooldown = 30;
-                        }
-                    }
-                    if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
-                        Renderer.removeFromRenderList(nt.currentScreen);
-                        nt.currentScreen = new ScreenMenu(nt);
-                    }
-                    try {
-                        Thread.sleep(5);
-                    } catch (Exception ex) {
-                        
-                    }
-                    break;
+                break;
+            // Split
+            case BRANCHMENU:
+                if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
+                    Renderer.removeFromRenderList(nt.currentScreen);
+                    nt.currentScreen = new ScreenMenu(nt);
                 }
-                cooldown--;
+                if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+                    System.exit(0);
+                }
+                break;
+            // Split
+            case LOGIN:
+                if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+                    System.exit(0);
+                }
+                break;
+            // Split
+            case INGAME:
+            if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+                nt.thePlayer.setVelY(-0.35f);
+                nt.thePlayer.setVelX(0);
+                nt.thePlayer.setDir(1);
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+                nt.thePlayer.setVelY(0.35f);
+                nt.thePlayer.setVelX(0);
+                nt.thePlayer.setDir(3);
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                nt.thePlayer.setVelX(-0.35f);
+                nt.thePlayer.setVelY(0);
+                nt.thePlayer.setDir(2);
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                nt.thePlayer.setVelX(0.35f);
+                nt.thePlayer.setVelY(0);
+                nt.thePlayer.setDir(0);
+            } else {
+                nt.thePlayer.setVelX(0);
+                nt.thePlayer.setVelY(0);
             }
+            if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
+                Random gen = new Random();
+                if (cooldown<=0) {
+                    nt.currentScreen.addToRenderList(new EntityMonster(gen.nextInt(nt.screenWidth-32),gen.nextInt(nt.screenHeight-32),32,32,nt.currentScreen));
+                    cooldown = 15;
+                }
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+                // Pause Game
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
+                Renderer.removeFromRenderList(nt.currentScreen);
+                nt.currentScreen = new ScreenMenu(nt);
+            }
+            
+            break;
         }
+        cooldown--;
     }
 }
