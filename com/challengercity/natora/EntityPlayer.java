@@ -21,8 +21,8 @@ public class EntityPlayer extends Entity {
     private int aniDelay = 10;
     public boolean performingAction = false;
     private Texture texture2;
-    private int maxHealth = 20;
-    public int health = 20;
+    private int maxHealth = 50;
+    public int health = 50;
     private Texture healthTexture;
     public int wealth = 0;
     public int items = 10;
@@ -63,13 +63,13 @@ public class EntityPlayer extends Entity {
         switch (dir) {
             case 0:
                 for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.offsetIntersects(screen.renderTileList.get(i), 16, 0)) {
+                    if (this.intersectsOffset(screen.renderTileList.get(i), 16, 0)) {
                         screen.renderTileList.get(i).breakTile();
                     }
                 }
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
-                    if (this.offsetIntersects(ro, 16, 0)&&ro instanceof EntityMonster) {
+                    if (this.intersectsOffset(ro, 16, 0)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
                         em.health=em.health-5;
                     }
@@ -77,13 +77,13 @@ public class EntityPlayer extends Entity {
                 break;
             case 1:
                 for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.offsetIntersects(screen.renderTileList.get(i), 0, -16)) {
+                    if (this.intersectsOffset(screen.renderTileList.get(i), 0, -16)) {
                         screen.renderTileList.get(i).breakTile();
                     }
                 }
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
-                    if (this.offsetIntersects(ro, 0, -16)&&ro instanceof EntityMonster) {
+                    if (this.intersectsOffset(ro, 0, -16)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
                         em.health=em.health-5;
                     }
@@ -91,13 +91,13 @@ public class EntityPlayer extends Entity {
                 break;
             case 2:
                 for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.offsetIntersects(screen.renderTileList.get(i), -16, 0)) {
+                    if (this.intersectsOffset(screen.renderTileList.get(i), -16, 0)) {
                         screen.renderTileList.get(i).breakTile();
                     }
                 }
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
-                    if (this.offsetIntersects(ro, -16, 0)&&ro instanceof EntityMonster) {
+                    if (this.intersectsOffset(ro, -16, 0)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
                         em.health=em.health-5;
                     }
@@ -105,13 +105,13 @@ public class EntityPlayer extends Entity {
                 break;
             case 3:
                 for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.offsetIntersects(screen.renderTileList.get(i), 0, 16)) {
+                    if (this.intersectsOffset(screen.renderTileList.get(i), 0, 16)) {
                         screen.renderTileList.get(i).breakTile();
                     }
                 }
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
-                    if (this.offsetIntersects(ro, 0, 16)&&ro instanceof EntityMonster) {
+                    if (this.intersectsOffset(ro, 0, 16)&&ro instanceof EntityMonster) {
                         EntityMonster em = (EntityMonster) ro;
                         em.health=em.health-5;
                     }
@@ -211,7 +211,7 @@ public class EntityPlayer extends Entity {
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight&&!performingAction) {
             boolean clear = true;
             for (int i = 0; i<screen.renderTileList.size(); i++) {
-                if (this.offsetIntersects((RenderableObject) screen.renderTileList.get(i), (int)(velX*delta), (int)(velY*delta))) {
+                if (this.intersectsOffset((RenderableObject) screen.renderTileList.get(i), (int)(velX*delta), (int)(velY*delta))) {
                     clear = false;
                 }
             }
@@ -222,6 +222,14 @@ public class EntityPlayer extends Entity {
         }
         if (velX==0&&velY==0) {
             ani=0;
+        }
+        
+        if (health<=0) {
+            this.delete();
+            if (screen.nt.thePlayer.equals(this)) {
+                Renderer.removeFromRenderList(screen.nt.currentScreen);
+                screen.nt.currentScreen = new ScreenMenu(screen.nt);
+            }
         }
     }
     

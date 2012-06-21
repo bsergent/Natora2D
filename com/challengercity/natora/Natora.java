@@ -65,7 +65,7 @@ public class Natora {
     }
     
     public void run() {
-        version = "0.1.1 Alpha";
+        version = "0.1.2 Alpha";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
@@ -77,7 +77,8 @@ public class Natora {
             Display.setTitle("Natora - v"+version);
             Display.create();
         } catch(Exception ex) {
-            ex.printStackTrace();
+            System.out.println("[Natora] Could not setup display.");
+            System.exit(1);
         }
         
         renderer = new Renderer(this);

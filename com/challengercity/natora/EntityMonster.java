@@ -18,6 +18,7 @@ public class EntityMonster extends Entity {
     private int ani = 0;
     private int aniDelay = 15;
     private int movementChangeDelay = 0;
+    private int attackDelay = 0;
     private int maxHealth = 20;
     public int health = 20;
     private Texture healthTexture;
@@ -45,61 +46,111 @@ public class EntityMonster extends Entity {
     }
     
     public void update(long delta) { // Fix from getting stuck at borders, check future bounds before going
+        EntityPlayer playerToAttack = null;
         if (movementChangeDelay<=0) {
-            if (randGen.nextBoolean()) {
-                if (randGen.nextInt(3)==0) {
-                    velX = randGen.nextFloat()-0.5f;
-                    if (velX>=0.3f) {
-                        velX = 0.3f;
-                    }
-                    if (velX<=-0.3f) {
-                        velX = -0.3f;
-                    }
-                } else {
-                    velX = 0;
-                    dir=randGen.nextInt(3);
-                }
-                velY = 0;
-                if (velX>0) {
-                    dir=0;
-                } else if (velX<0){
-                    dir=2;
-                }
-            } else {
-                if (randGen.nextInt(3)==0) {
-                    velY = randGen.nextFloat()-0.5f;
-                    if (velY>=0.3f) {
-                        velY=0.3f;
-                    }
-                    if (velY <=-0.3f) {
-                        velY=-0.3f;
-                    }
-                } else {
-                    velY = 0;
-                    dir=randGen.nextInt(3);
-                }
-                velX = 0;
-                if (velY>0) {
-                    dir=3;
-                } else if (velY<0) {
-                    dir=1;
+            
+            for (int i = 0; i<screen.renderEntityList.size(); i++) {
+                if (screen.renderEntityList.get(i).intersectsField(posX-128, posY-128, width+256, height+256) && screen.renderEntityList.get(i) instanceof EntityPlayer) {
+                    playerToAttack = (EntityPlayer) screen.renderEntityList.get(i);
                 }
             }
-            movementChangeDelay=60;
+            
+            if (playerToAttack != null && attackDelay<=0) { // A Player is Near
+                
+                if (playerToAttack.intersectsField(posX-16, posY-16, width+32, height+32)) { // Adjacent to Player
+                    playerToAttack.health = playerToAttack.health-5;
+                    attackDelay = 60;
+                }
+                
+            } else {
+                if (randGen.nextBoolean()) {
+                    if (randGen.nextInt(3)==0) {
+                        velX = randGen.nextFloat()-0.5f;
+                        if (velX>=0.3f) {
+                            velX = 0.3f;
+                        }
+                        if (velX<=-0.3f) {
+                            velX = -0.3f;
+                        }
+                    } else {
+                        velX = 0;
+                        dir=randGen.nextInt(3);
+                    }
+                    velY = 0;
+                    if (velX>0) {
+                        dir=0;
+                    } else if (velX<0){
+                        dir=2;
+                    }
+                } else {
+                    if (randGen.nextInt(3)==0) {
+                        velY = randGen.nextFloat()-0.5f;
+                        if (velY>=0.3f) {
+                            velY=0.3f;
+                        }
+                        if (velY <=-0.3f) {
+                            velY=-0.3f;
+                        }
+                    } else {
+                        velY = 0;
+                        dir=randGen.nextInt(3);
+                    }
+                    velX = 0;
+                    if (velY>0) {
+                        dir=3;
+                    } else if (velY<0) {
+                        dir=1;
+                    }
+                }
+                movementChangeDelay=60;
+            }
         }
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) { // Check screen boundries
             boolean clear = true;
             for (int i = 0; i<screen.renderTileList.size(); i++) {
-                if (this.offsetIntersects((RenderableObject) screen.renderTileList.get(i), (int)(velX*delta), (int)(velY*delta))) {
+                if (this.intersectsOffset((RenderableObject) screen.renderTileList.get(i), (int)(velX*delta), (int)(velY*delta))) {
                     clear = false;
                 }
             }
             if (clear) {
                 posX = posX + (int)(velX*delta);
                 posY = posY + (int)(velY*delta);
+                if (playerToAttack != null) {
+                    //if (playerToAttack.posX+5>this.posX&&this.posX<playerToAttack.posX-5) {
+                    if (playerToAttack.intersectsField(posX-16,posY-128, 64, 256)) {
+                        if (playerToAttack.posY>this.posY) {
+                            velY = 0.3f;
+                            velX = 0.0f;
+                            dir = 1;
+                        } else if (playerToAttack.posY<this.posY) {
+                            velY = -0.3f;
+                            velX = 0.0f;
+                            dir = 3;
+                        }
+                    } else {
+                        if (playerToAttack.posX>this.posX) {
+                            velX = 0.3f;
+                            velY = 0.0f;
+                            dir = 0;
+                        } else if (playerToAttack.posX<this.posX) {
+                            velX = -0.3f;
+                            velY = 0.0f;
+                            dir = 2;
+                        }
+                    }
+//                    if (playerToAttack.posY+3>this.posY&&this.posY<playerToAttack.posY-3) {
+//                        posY = playerToAttack.posY;
+//                        velY = 0;
+//                    } else {
+//                        
+//                    }
+                    movementChangeDelay=1;
+                }
             }
         }
         movementChangeDelay--;
+        attackDelay--;
+        
         if (velX==0&&velY==0) {
             ani=0;
         }

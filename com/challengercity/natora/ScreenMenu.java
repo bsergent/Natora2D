@@ -31,7 +31,9 @@ public class ScreenMenu extends Screen {
         addToRenderList(b);
         b = new GUIButton(Natora.screenWidth/2-100, 300, 250, 40, 2, this, "Options", 24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, 350, 250, 40, 3, this, "Credits", 24);
+        b = new GUIButton(Natora.screenWidth/2-100, 350, 250, 40, 5, this, "Change-Log", 24);
+        addToRenderList(b);
+        b = new GUIButton(Natora.screenWidth/2-100, 400, 250, 40, 3, this, "Credits", 24);
         addToRenderList(b);
         b = new GUIButton(Natora.screenWidth/2-100, Natora.screenHeight-60, 250, 40, 4, this, "Exit", 24);
         addToRenderList(b);
@@ -72,6 +74,10 @@ public class ScreenMenu extends Screen {
         if (id==4) {
             Display.destroy();
             System.exit(0);
+        }
+        if (id==5) {
+            Renderer.removeFromRenderList(this);
+            nt.currentScreen = new ScreenChangeLog(nt);
         }
     }
     
