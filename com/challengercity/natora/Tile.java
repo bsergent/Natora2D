@@ -8,43 +8,36 @@ import java.awt.Font;
 import java.util.Random;
 import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.opengl.Texture;
+import java.awt.Rectangle;
 /**
  *
  * @author Ben Sergent V
  */
-public abstract class Tile extends RenderableObject {
+public abstract class Tile {
     
-    protected int velX, velY;
     protected int picX, picY, picWidth, picHeight;
-    protected Texture texture;
+    protected static Texture texture;
     protected Random randGen = new Random();
-    protected Screen screen;
+    protected World world;
     protected String name;
     protected int hardness;
+    protected boolean visible = true;
+    protected Rectangle rect;
+    protected boolean isSolid;
+    protected int index;
     
-    public Tile(int x, int y, int picX, int picY, String name, int hardness, Screen screen) {
-        
-        this.posX=x;
-        this.posY=y;
-        this.width=32;
-        this.height=32;
+    public Tile(int index, int picX, int picY, String name, int hardness, boolean isSolid, World world, Rectangle rect) {
         this.picX=picX;
         this.picY=picY;
         this.picWidth=32;
         this.picHeight=32;
         this.name=name;
         this.hardness=hardness;
-        this.screen=screen;
-        this.id=screen.getRenderId();
+        this.world=world;
+        this.rect=rect;
+        this.isSolid=isSolid;
+        this.index=index;
           
-    }
-    
-    public float getX() {
-        return posX;
-    }
-    
-    public float getY() {
-        return posY;
     }
     
     public abstract void breakTile();
@@ -58,7 +51,7 @@ public abstract class Tile extends RenderableObject {
     }
     
     public void delete() {
-        screen.removeFromRenderList(this);
+        world.tiles[index] = new TileDirt(world, new Rectangle(rect.x, rect.y, 32, 32), index);
     }
     
     public void draw() {
@@ -70,16 +63,16 @@ public abstract class Tile extends RenderableObject {
 
             glBegin(GL_QUADS);
             glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Left
-            glVertex2i(posX, posY);
+            glVertex2i(rect.x, rect.y);
 
             glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Right
-            glVertex2i(posX+width, posY);
+            glVertex2i(rect.x + rect.width, rect.y);
 
             glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Right
-            glVertex2i(posX+width, posY+height);
+            glVertex2i(rect.x+rect.width, rect.y+rect.height);
 
             glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Left
-            glVertex2i(posX, posY+height);
+            glVertex2i(rect.x, rect.y+rect.height);
             glEnd();
         }
     }

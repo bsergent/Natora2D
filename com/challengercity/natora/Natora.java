@@ -7,6 +7,7 @@ package com.challengercity.natora;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.*;
+import java.io.File;
 /**
  *
  * @author Ben Sergent V
@@ -20,6 +21,7 @@ public class Natora {
     public Renderer renderer;
     public static String version;
     public static Screen currentScreen;
+    public static boolean fullscreen = false;
     public static int screenWidth;
     public static int screenHeight;
     private static long lastFrame;
@@ -27,15 +29,17 @@ public class Natora {
     private static int fps;
     public static int currentFPS;
     public static long lastDelta;
+    public static int guiCooldown = 0;
+    private static File mainDir;
 
-    public Natora(String username) {
+    public Natora(String username, String dir) {
         super();
-        gs = EnumGameState.MAINMENU;
+        this.mainDir=new File(dir);
         this.username=username;
     }
     
     public static void main(String[] args) {
-        Natora nt = new Natora(args[0]);
+        Natora nt = new Natora(args[0], args[1]);
         nt.run();
     }
     
@@ -64,25 +68,79 @@ public class Natora {
         fps++;
     }
     
+    public void setDisplayMode(int width, int height, boolean fullscreen) {
+
+        // return if requested DisplayMode is already set
+        if ((Display.getDisplayMode().getWidth() == width) && 
+            (Display.getDisplayMode().getHeight() == height) && 
+            (Display.isFullscreen() == fullscreen)) {
+                return;
+        }
+
+        try {
+            DisplayMode targetDisplayMode = null;
+
+            if (fullscreen) {
+                DisplayMode[] modes = Display.getAvailableDisplayModes();
+                int freq = 0;
+
+                for (int i=0;i<modes.length;i++) {
+                    DisplayMode current = modes[i];
+
+                    if ((current.getWidth() == width) && (current.getHeight() == height)) {
+                        if ((targetDisplayMode == null) || (current.getFrequency() >= freq)) {
+                            if ((targetDisplayMode == null) || (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel())) {
+                                targetDisplayMode = current;
+                                freq = targetDisplayMode.getFrequency();
+                            }
+                        }
+
+                        // if we've found a match for bpp and frequence against the 
+                        // original display mode then it's probably best to go for this one
+                        // since it's most likely compatible with the monitor
+                        if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel()) &&
+                            (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency())) {
+                                targetDisplayMode = current;
+                                break;
+                        }
+                    }
+                }
+            } else {
+                targetDisplayMode = new DisplayMode(width,height);
+            }
+
+            if (targetDisplayMode == null) {
+                System.out.println("Failed to find value mode: "+width+"x"+height+" fs="+fullscreen);
+                return;
+            }
+
+            Display.setDisplayMode(targetDisplayMode);
+            Display.setFullscreen(fullscreen);
+
+        } catch (LWJGLException e) {
+            System.out.println("Unable to setup mode "+width+"x"+height+" fullscreen="+fullscreen + e);
+        }
+    }
+    
     public void run() {
-        version = "0.1.2 Alpha";
+        version = "0.1.3 Alpha";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
-        //screenWidth=1600;
-        //screenHeight=1200;
         try {
-            Display.setDisplayMode(new DisplayMode(screenWidth, screenHeight));
-            //Display.setFullscreen(true);
+            setDisplayMode(screenWidth, screenHeight, fullscreen);
             Display.setTitle("Natora - v"+version);
             Display.create();
+            glViewport(0, 0, Display.getWidth(), Display.getHeight());
+            screenHeight=Display.getHeight();
+            screenWidth=Display.getWidth();
         } catch(Exception ex) {
             System.out.println("[Natora] Could not setup display.");
             System.exit(1);
         }
         
         renderer = new Renderer(this);
-        currentScreen = new ScreenMenu(this); // Create Menu Screen
+        currentScreen = new ScreenBoot(this);
         control = new Controller(this); // Listen for input
         
         lastFPS = getTime();

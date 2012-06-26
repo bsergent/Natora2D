@@ -15,11 +15,12 @@ import java.util.Random;
 public class EntityMenuBug extends Entity {
     
     private int dir = 0;
-    private int ani = 0;
+    private byte ani = 0;
     private int xBounds1, yBounds1, xBounds2, yBounds2;
     private int aniDelay = 15;
     private int movementChangeDelay;
     private Random randGen = new Random();
+    protected static Texture staticTexture;
     
 
     public EntityMenuBug(int x, int y, int width, int height, Screen sc, int xBounds1, int yBounds1, int xBounds2, int yBounds2) {
@@ -43,7 +44,7 @@ public class EntityMenuBug extends Entity {
         return ani;
     }
 
-    public void setAni(int ani) {
+    public void setAni(byte ani) {
         this.ani = ani;
     } 
     
@@ -108,22 +109,22 @@ public class EntityMenuBug extends Entity {
     }
     
     public void draw() {
-        if (texture == null) {
-            texture = ResourceLoader.loadImage("MenuBug", ".PNG");
+        if (staticTexture == null) {
+            staticTexture = ResourceLoader.loadImage("MenuBug", ".PNG");
         }
-        texture.bind();
+        staticTexture.bind();
         
         glBegin(GL_QUADS);
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), texture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), texture.getImageHeight()));  // Upper-Left
+        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), staticTexture.getImageHeight()));  // Upper-Left
         glVertex2i(posX, posY);
 
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), texture.getImageHeight()));  // Upper-Right
+        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), staticTexture.getImageHeight()));  // Upper-Right
         glVertex2i(posX+width, posY);
 
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, texture.getImageHeight()));  // Lower-Right
+        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, staticTexture.getImageHeight()));  // Lower-Right
         glVertex2i(posX+width, posY+height);
 
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), texture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, texture.getImageHeight()));  // Lower-Left
+        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, staticTexture.getImageHeight()));  // Lower-Left
         glVertex2i(posX, posY+height);
         glEnd();
         

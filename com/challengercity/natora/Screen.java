@@ -13,10 +13,9 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public abstract class Screen {
 
-    public static ArrayList<Tile> renderTileList;
-    public static ArrayList<Entity> renderEntityList;
-    public static ArrayList<EntityPlayer> renderTempPlayerList;
-    public static ArrayList<GUI> renderGUIList;
+    public ArrayList<Entity> renderEntityList;
+    public ArrayList<EntityPlayer> renderTempPlayerList;
+    public ArrayList<GUI> renderGUIList;
     protected Natora nt;
     protected int tempScreenId;
     protected int idCount;
@@ -26,12 +25,10 @@ public abstract class Screen {
     public Screen(Natora nt) {
         
         this.nt = nt;
-        renderTileList = new ArrayList<Tile>();
         renderEntityList = new ArrayList<Entity>();
         renderTempPlayerList = new ArrayList<EntityPlayer>();
         renderGUIList = new ArrayList<GUI>();
         Renderer.addToRenderList(this);
-        System.out.println("[Screen] Initialized");
         
     }
     
@@ -54,9 +51,6 @@ public abstract class Screen {
     }
     
     public ArrayList getRenderList(String listName) {
-        if (listName.equals("Tile")) {
-            return renderTileList;
-        }
         if (listName.equals("Entities")) {
             return renderEntityList;
         }
@@ -71,13 +65,11 @@ public abstract class Screen {
         if (listName.equals("GUI")) {
             return renderGUIList;
         }
-        return renderTileList;
+        return renderEntityList;
     }
     
     public void addToRenderList(RenderableObject ro) {
-        if (ro instanceof Tile) {
-            renderTileList.add((Tile) ro);
-        } else if (ro instanceof Entity) {
+        if (ro instanceof Entity) {
             renderEntityList.add((Entity) ro);
         } else if (ro instanceof GUI) {
             renderGUIList.add((GUI) ro);
@@ -87,11 +79,6 @@ public abstract class Screen {
     }
     
     public void removeFromRenderList(RenderableObject ro) {
-        for (int i = 0; i<renderTileList.size(); i++) {
-            if (renderTileList.get(i).id==ro.id) {
-                renderTileList.remove(i);
-            }
-        }
         for (int i = 0; i<renderEntityList.size(); i++) {
             if (renderEntityList.get(i).id==ro.id) {
                 renderEntityList.remove(i);
@@ -106,20 +93,20 @@ public abstract class Screen {
     
     public void render() {
         renderTempPlayerList.clear();
-        for (int i = 0; i<renderTileList.size(); i++) {
-            renderTileList.get(i).draw();
-        }
         for (int i = 0; i<renderEntityList.size(); i++) {
             if (renderEntityList.get(i) instanceof EntityPlayer) {
                 renderTempPlayerList.add((EntityPlayer) renderEntityList.get(i));
             } else {
+                glColor4f(1.0f,1.0f,1.0f,1.0f);
                 renderEntityList.get(i).draw();
             }
         }
         for (int i = 0; i<renderTempPlayerList.size(); i++) {
+            glColor4f(1.0f,1.0f,1.0f,1.0f);
             renderTempPlayerList.get(i).draw();
         }
         for (int i = 0; i<renderGUIList.size(); i++) {
+            glColor4f(1.0f,1.0f,1.0f,1.0f);
             renderGUIList.get(i).draw();
         }
         renderTempPlayerList.clear();

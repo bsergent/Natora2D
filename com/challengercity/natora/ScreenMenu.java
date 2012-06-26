@@ -25,17 +25,17 @@ public class ScreenMenu extends Screen {
     
     public void startup() {
         GUI b;
-        b = new GUIButton(Natora.screenWidth/2-100, 200, 250, 40, 0, this, "SinglePlayer", 24);
+        b = new GUIButton(Natora.screenWidth/2-125, 200, 250, 40, 0, this, "SinglePlayer", 24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, 250, 250, 40, 1, this, "MultiPlayer" ,24);
+        b = new GUIButton(Natora.screenWidth/2-125, 250, 250, 40, 1, this, "MultiPlayer" ,24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, 300, 250, 40, 2, this, "Options", 24);
+        b = new GUIButton(Natora.screenWidth/2-125, 300, 250, 40, 2, this, "Options", 24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, 350, 250, 40, 5, this, "Change-Log", 24);
+        b = new GUIButton(Natora.screenWidth/2-125, 350, 250, 40, 5, this, "Change-Log", 24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, 400, 250, 40, 3, this, "Credits", 24);
+        b = new GUIButton(Natora.screenWidth/2-125, 400, 250, 40, 3, this, "Credits", 24);
         addToRenderList(b);
-        b = new GUIButton(Natora.screenWidth/2-100, Natora.screenHeight-60, 250, 40, 4, this, "Exit", 24);
+        b = new GUIButton(Natora.screenWidth/2-125, Natora.screenHeight-60, 250, 40, 4, this, "Exit", 24);
         addToRenderList(b);
         b = new GUIImage(Natora.screenWidth/2-256, 20, 512, 147, 0, 0, 512, 147, this, "NatoraLogo", ".PNG");
         addToRenderList(b);
@@ -57,19 +57,19 @@ public class ScreenMenu extends Screen {
     public void actionPerformed(int id) {
         if (id==0) {
             Renderer.removeFromRenderList(this);
-            nt.currentScreen = new ScreenGame(nt);
+            nt.currentScreen = new ScreenLoadingWorld(nt); 
         }
         if (id==1) {
             Renderer.removeFromRenderList(this);
-            nt.currentScreen = new ScreenMultiPlayer(nt);
+            nt.currentScreen = new ScreenMultiPlayer(nt); 
         }
         if (id==2) {
             Renderer.removeFromRenderList(this);
-            nt.currentScreen = new ScreenOptions(nt);
+            nt.currentScreen = new ScreenOptions(nt); 
         }
         if (id==3) {
             Renderer.removeFromRenderList(this);
-            nt.currentScreen = new ScreenCredits(nt);
+            nt.currentScreen = new ScreenCredits(nt); 
         }
         if (id==4) {
             Display.destroy();
@@ -77,7 +77,8 @@ public class ScreenMenu extends Screen {
         }
         if (id==5) {
             Renderer.removeFromRenderList(this);
-            nt.currentScreen = new ScreenChangeLog(nt);
+            nt.currentScreen = new ScreenChangeLog(nt); 
+  
         }
     }
     

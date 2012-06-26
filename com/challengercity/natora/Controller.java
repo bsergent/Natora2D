@@ -39,7 +39,7 @@ public class Controller {
             case BRANCHMENU:
                 if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
                     Renderer.removeFromRenderList(nt.currentScreen);
-                    nt.currentScreen = new ScreenMenu(nt);
+                    nt.currentScreen = new ScreenMenu(nt); 
                 }
                 if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                     System.exit(0);
@@ -53,22 +53,18 @@ public class Controller {
                 break;
             // Split
             case INGAME:
-            if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_W)) {
                 nt.thePlayer.setVelY(-0.35f);
                 nt.thePlayer.setVelX(0);
-                nt.thePlayer.setDir(1);
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) || Keyboard.isKeyDown(Keyboard.KEY_S)) {
                 nt.thePlayer.setVelY(0.35f);
                 nt.thePlayer.setVelX(0);
-                nt.thePlayer.setDir(3);
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_A)) {
                 nt.thePlayer.setVelX(-0.35f);
                 nt.thePlayer.setVelY(0);
-                nt.thePlayer.setDir(2);
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_D)) {
                 nt.thePlayer.setVelX(0.35f);
                 nt.thePlayer.setVelY(0);
-                nt.thePlayer.setDir(0);
             } else {
                 nt.thePlayer.setVelX(0);
                 nt.thePlayer.setVelY(0);
@@ -80,13 +76,13 @@ public class Controller {
                     cooldown = 15;
                 }
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_Z) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 if (cooldown<=0) {
                     nt.thePlayer.performAction1();
                     cooldown = 10;
                 }
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_X) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 if (cooldown<=0) {
                     nt.thePlayer.performAction2();
                     cooldown = 10;
@@ -101,7 +97,7 @@ public class Controller {
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
                 Renderer.removeFromRenderList(nt.currentScreen);
-                nt.currentScreen = new ScreenMenu(nt);
+                nt.currentScreen = new ScreenMenu(nt); 
             }
             
             break;

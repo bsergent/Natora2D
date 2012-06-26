@@ -15,31 +15,75 @@ import org.newdawn.slick.opengl.Texture;
  */
 public class GUIText extends GUI {
 
-    protected TrueTypeFont font;
+    protected static TrueTypeFont font48;
+    protected static TrueTypeFont font36;
+    protected static TrueTypeFont font24;
+    protected static TrueTypeFont font16;
+    protected static TrueTypeFont font12;
     protected String label;
-    protected int fontSize = 16;
+    protected int fontSize;
     protected boolean centered;
     
     public GUIText (int x, int y, Screen screen, String text, int fontSize, boolean centered) {
         super(x, y, 0, 0, 1, 0, 128, 24, screen);
         this.label = text;
-        this.fontSize = fontSize;
         this.centered = centered;
+        this.fontSize = fontSize;
     }
     
     public void draw() {
         if (visible) {
-            if (font == null) {
-                font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+            if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                loadFonts();
             }
             int strPosX = posX;
             int strPosY = posY;
-            if (centered) {
-                strPosX = posX+width/2-(font.getWidth(label)/2);
-                strPosY = posY+height/2-(font.getHeight(label)/2);
+            switch (fontSize) {
+                case 48:
+                    if (centered) {
+                        strPosX = posX+width/2-(font48.getWidth(label)/2);
+                        strPosY = posY+height/2-(font48.getHeight(label)/2);
+                    }
+                    font48.drawString(strPosX, strPosY, label);
+                    break;
+                case 36:
+                    if (centered) {
+                        strPosX = posX+width/2-(font36.getWidth(label)/2);
+                        strPosY = posY+height/2-(font36.getHeight(label)/2);
+                    }
+                    font36.drawString(strPosX, strPosY, label);
+                    break;
+                case 24:
+                    if (centered) {
+                        strPosX = posX+width/2-(font24.getWidth(label)/2);
+                        strPosY = posY+height/2-(font24.getHeight(label)/2);
+                    }
+                    font24.drawString(strPosX, strPosY, label);
+                    break;
+                case 16:
+                    if (centered) {
+                        strPosX = posX+width/2-(font16.getWidth(label)/2);
+                        strPosY = posY+height/2-(font16.getHeight(label)/2);
+                    }
+                    font16.drawString(strPosX, strPosY, label);
+                    break;
+                case 12:
+                    if (centered) {
+                        strPosX = posX+width/2-(font12.getWidth(label)/2);
+                        strPosY = posY+height/2-(font12.getHeight(label)/2);
+                    }
+                    font12.drawString(strPosX, strPosY, label);
+                    break;
             }
-            font.drawString(strPosX, strPosY, label);
         }
+    }
+    
+    public void loadFonts() {
+        font48 = new TrueTypeFont(new Font("Courier", Font.PLAIN, 46),true);
+        font36 = new TrueTypeFont(new Font("Courier", Font.PLAIN, 36),true);
+        font24 = new TrueTypeFont(new Font("Courier", Font.PLAIN, 24),true);
+        font16 = new TrueTypeFont(new Font("Courier", Font.PLAIN, 16),true);
+        font12 = new TrueTypeFont(new Font("Courier", Font.PLAIN, 12),true);
     }
     
     public void delete() {

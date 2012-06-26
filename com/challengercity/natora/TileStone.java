@@ -5,19 +5,20 @@
 
 package com.challengercity.natora;
 
+import java.awt.Rectangle;
 /**
  *
  * @author Ben Sergent V/ha1fBit
  */
 public class TileStone extends Tile {
-
-    public TileStone(int x, int y, Screen screen) {
-        super(x, y, 0, 0, "Stone", 5, screen);
+    
+    public TileStone(World world, Rectangle rect, int index) {
+        super(index, 0, 0, "Stone", 5, true, world, rect);
           
     }
     
     public void breakTile() {
-        screen.addToRenderList(new ItemStone(posX+(randGen.nextInt(width-16)), posY+(randGen.nextInt(height-16)), screen));
+        world.screen.addToRenderList(new ItemStone(rect.x+(randGen.nextInt(rect.width-16)), rect.y+(randGen.nextInt(rect.height-16)), world.screen));
         delete();
     }
     

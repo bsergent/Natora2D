@@ -8,35 +8,22 @@ package com.challengercity.natora;
 import java.awt.Font;
 import java.util.ArrayList;
 import org.newdawn.slick.TrueTypeFont;
-
+import static org.lwjgl.opengl.GL11.*;
 /**
  *
  * @author Ben Sergent V/ha1fBit
  */
 public class ScreenGame extends Screen {
 
+    public World world;
+    
     public ScreenGame(Natora nt) {
         super(nt);
         addToRenderList(nt.thePlayer = new EntityPlayer(Natora.screenWidth/2-16,Natora.screenHeight/2-16,32,32,this,nt.username));
         Natora.gs=EnumGameState.INGAME;
-
-        addToRenderList(new TileStone(10, 100, this));
-        addToRenderList(new TileStone(10, 132, this));
-        addToRenderList(new TileStone(10, 164, this));
-        addToRenderList(new TileStone(10, 196, this));
-        addToRenderList(new TileStone(10, 228, this));
         
-        addToRenderList(new TileDirt(42, 100, this));
-        addToRenderList(new TileDirt(42, 132, this));
-        addToRenderList(new TileDirt(42, 164, this));
-        addToRenderList(new TileDirt(42, 196, this));
-        addToRenderList(new TileDirt(42, 228, this));
-        
-        addToRenderList(new TileDirt(106, 100, this));
-        addToRenderList(new TileDirt(106, 132, this));
-        addToRenderList(new TileDirt(106, 164, this));
-        addToRenderList(new TileDirt(138, 196, this));
-        addToRenderList(new TileDirt(138, 228, this));
+        world = new World(this);
+        world.generate();
         
         addToRenderList(new ItemCoin(74, 100, this));
         addToRenderList(new ItemStone(74, 116, this));
@@ -60,16 +47,57 @@ public class ScreenGame extends Screen {
         
     }
     
+    public void render() {
+        renderTempPlayerList.clear();
+        world.draw();
+        for (int i = 0; i<renderEntityList.size(); i++) {
+            if (renderEntityList.get(i) instanceof EntityPlayer) {
+                renderTempPlayerList.add((EntityPlayer) renderEntityList.get(i));
+            } else {
+                glColor4f(1.0f,1.0f,1.0f,1.0f);
+                renderEntityList.get(i).draw();
+            }
+        }
+        for (int i = 0; i<renderTempPlayerList.size(); i++) {
+            glColor4f(1.0f,1.0f,1.0f,1.0f);
+            renderTempPlayerList.get(i).draw();
+        }
+        for (int i = 0; i<renderGUIList.size(); i++) {
+            glColor4f(1.0f,1.0f,1.0f,1.0f);
+            renderGUIList.get(i).draw();
+        }
+        renderTempPlayerList.clear();
+    }
+    
     public class GUITextFPS extends GUIText {
         public GUITextFPS (int x, int y, Screen screen, int fontSize, boolean centered) {
             super(x, y, screen, "Blank", fontSize, centered);
         }
         
+        public TrueTypeFont font;
+        
         public void draw() {
             if (visible) {
                 label = "FPS: "+Natora.currentFPS;
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 int strPosX = posX;
                 int strPosY = posY;
@@ -87,11 +115,30 @@ public class ScreenGame extends Screen {
             super(x, y, screen, "Blank", fontSize, centered);
         }
         
+        public TrueTypeFont font;
+        
         public void draw() {
             if (visible) {
                 label = "Entities: "+Renderer.getEntityCount();
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 int strPosX = posX;
                 int strPosY = posY;
@@ -109,11 +156,30 @@ public class ScreenGame extends Screen {
             super(x, y, screen, "Blank", fontSize, centered);
         }
         
+        public TrueTypeFont font;
+        
         public void draw() {
             if (visible) {
-                label = "Tiles: "+Renderer.getTileCount();
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                label = "Tiles: "+world.tileCount;
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 int strPosX = posX;
                 int strPosY = posY;
@@ -131,11 +197,30 @@ public class ScreenGame extends Screen {
             super(x, y, screen, "Blank", fontSize, centered);
         }
         
+        public TrueTypeFont font;
+        
         public void draw() {
             if (visible) {
                 label = "Coins: "+nt.thePlayer.wealth;
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 int strPosX = posX;
                 int strPosY = posY;
@@ -153,11 +238,30 @@ public class ScreenGame extends Screen {
             super(x, y, screen, "Blank", fontSize, centered);
         }
         
+        public TrueTypeFont font;
+        
         public void draw() {
             if (visible) {
                 label = "Items: "+nt.thePlayer.items;
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 int strPosX = posX;
                 int strPosY = posY;
@@ -167,25 +271,6 @@ public class ScreenGame extends Screen {
                 }
                 font.drawString(strPosX, strPosY, label);
             }
-        }
-    }
-    
-    public class GUIImageMoving extends GUIImage {
-        public GUIImageMoving (int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen screen, String texName, String texExt) {
-            super(x, y, width, height, picX, picY, picWidth, picHeight, screen, texName, texExt);
-        }
-        public boolean done = false;
-        public void draw() {
-            if (!done) {
-                width=width-4;
-                posX=posX+2;
-                height=height-4;
-                posY=posY+2;
-                if (width<=0||height<=0) {
-                    done = true;
-                }
-            }
-            super.draw();
         }
     }
 }

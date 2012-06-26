@@ -18,13 +18,12 @@ import org.newdawn.slick.Color;
  */
 public class GUIButton extends GUI {
 
-    private Texture texture;
+    private static Texture texture;
     private TrueTypeFont font;
     private String label;
     private int fontSize = 16;
     private int hovered = 0;
     public int actionId;
-    public int cooldown = 0;
     
     public GUIButton (int x, int y, int width, int height, int actionId, Screen screen, String text, int fontSize) {
         super(x, y, width, height, 1, 0, 128, 24, screen);
@@ -72,16 +71,16 @@ public class GUIButton extends GUI {
     }
     
     public void checkMouse() {
-        if (Mouse.getX()>posX&&Mouse.getX()<(posX+width) && (Natora.screenHeight-Mouse.getY())>posY&&(Natora.screenHeight-Mouse.getY())<(posY+height) && cooldown<=0) {
+        if (Mouse.getX()>posX&&Mouse.getX()<(posX+width) && (Natora.screenHeight-Mouse.getY())>posY&&(Natora.screenHeight-Mouse.getY())<(posY+height) && screen.nt.guiCooldown<=0) {
             hovered = 1;
             if (Mouse.isButtonDown(0)) {
                 screen.actionPerformed(actionId);
-                cooldown=30;
+                screen.nt.guiCooldown=60;
             }
         } else {
             hovered = 0;
         }
-        cooldown--;
+        screen.nt.guiCooldown--;
     }
     
 }

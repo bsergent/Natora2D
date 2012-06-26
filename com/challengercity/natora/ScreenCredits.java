@@ -19,7 +19,7 @@ public class ScreenCredits extends Screen {
 
     public ScreenCredits(Natora nt) {
         super(nt);
-        Natora.gs = EnumGameState.BRANCHMENU;
+        Natora.gs=EnumGameState.BRANCHMENU;
         lastY = Natora.screenHeight + 50;
         lastStopY = Natora.screenHeight / 2 - 80;
 
@@ -65,7 +65,7 @@ public class ScreenCredits extends Screen {
 
         addToRenderList(new GUITextCredits(this, "Special Thanks:", 16, true, 20));
         addToRenderList(new GUITextCredits(this, "Frank & Melissa Sergent", 24, true, 0));
-        addToRenderList(new GUITextCredits(this, "For encouraging me all the way.", 18, true, 0));
+        addToRenderList(new GUITextCredits(this, "For encouraging me all the way.", 16, true, -10));
 
         addToRenderList(new GUITextCreditsEnd(this, "Natora © 2012", 48, true, 300));
         addToRenderList(new GUITextCreditsEnd(this, "Press \"M\" to go back to the menu.", 24, true, -15));
@@ -73,6 +73,19 @@ public class ScreenCredits extends Screen {
     }
 
     public void actionPerformed(int id) {
+    }
+    
+    public void reset() {
+        for (GUI gui:renderGUIList) {
+            if (gui instanceof GUITextCredits) {
+                GUITextCredits newGui = (GUITextCredits) gui;
+                newGui.posY = newGui.firstY;
+            }
+            if (gui instanceof GUITextCreditsEnd) {
+                GUITextCreditsEnd newGui = (GUITextCreditsEnd) gui;
+                newGui.posY = newGui.firstY;
+            }
+        }
     }
 
     public class GUITextCredits extends GUIText {
@@ -84,6 +97,8 @@ public class ScreenCredits extends Screen {
         public boolean done = false;
         public int extraSpace;
         public boolean hasSetLastY = false;
+        public int firstY = 0;
+        public TrueTypeFont font;
 
         public void draw() {
             if (visible) {
@@ -94,11 +109,29 @@ public class ScreenCredits extends Screen {
                     }
                 }
 
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 if (!hasSetLastY) {
                     posY = lastY + extraSpace;
+                    firstY = posY;
                     lastY = posY + 3 + font.getHeight(label);
                     hasSetLastY = true;
                 }
@@ -122,6 +155,8 @@ public class ScreenCredits extends Screen {
         public boolean done = false;
         public int extraSpace;
         public boolean hasSetLastY = false;
+        public int firstY = 0;
+        public TrueTypeFont font;
 
         public void draw() {
             if (visible) {
@@ -133,11 +168,29 @@ public class ScreenCredits extends Screen {
                     }
                 }
 
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 if (!hasSetLastY) {
                     posY = lastY + extraSpace;
+                    firstY = posY;
                     lastY = posY + 3 + font.getHeight(label);
                     hasSetLastY = true;
                 }

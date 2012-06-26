@@ -15,13 +15,12 @@ import org.newdawn.slick.TrueTypeFont;
  */
 public class ScreenChangeLog extends Screen {
 
-    
     public int lastY;
     public int lastStopY;
 
     public ScreenChangeLog(Natora nt) {
         super(nt);
-        Natora.gs = EnumGameState.BRANCHMENU;
+        Natora.gs=EnumGameState.BRANCHMENU;
         lastY = Natora.screenHeight + 50;
         lastStopY = Natora.screenHeight / 2 - 80;
 
@@ -38,8 +37,17 @@ public class ScreenChangeLog extends Screen {
         addToRenderList(new GUITextCredits(this, "Natora©", 48, true, 0));
         addToRenderList(new GUITextCredits(this, "v" + Natora.version, 24, true, -25));
 
+        addToRenderList(new GUITextCredits(this, "v0.1.3 Alpha - 6/25/12", 16, true, 10));
+        addToRenderList(new GUITextCredits(this, "+Simple world generation", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "+Moving view", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "+Fullscreen option", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Optimized texture and font loading", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Global button cooldown", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Grid-Tiled world", 24, true, 0));
+        
         addToRenderList(new GUITextCredits(this, "v0.1.2 Alpha - 6/20/12", 16, true, 10));
-        addToRenderList(new GUITextCredits(this, "+Added Change-Log", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "+Change-log", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "+Monsters attack", 24, true, 0));
         
         addToRenderList(new GUITextCredits(this, "v0.1.1 Alpha - 6/20/12", 16, true, 10));
         addToRenderList(new GUITextCredits(this, "+Working login", 24, true, 0));
@@ -61,7 +69,7 @@ public class ScreenChangeLog extends Screen {
         addToRenderList(new GUITextCredits(this, "+Tiles", 24, true, 0));
         addToRenderList(new GUITextCredits(this, "+Collision Detection", 24, true, 0));
         addToRenderList(new GUITextCredits(this, "*Coins drop from monsters", 24, true, 0));
-        addToRenderList(new GUITextCredits(this, "Control listener in main loop for cooldowns", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Control listener in main loop for cooldowns", 24, true, 0));
         addToRenderList(new GUITextCredits(this, "*Renders by layer (Tiles>Entities>Players>GUI)", 24, true, 0));
         addToRenderList(new GUITextCredits(this, "*Tweaked monster AI", 24, true, 0));
         addToRenderList(new GUITextCredits(this, "*Tweaked speeds", 24, true, 0));
@@ -86,6 +94,19 @@ public class ScreenChangeLog extends Screen {
 
     public void actionPerformed(int id) {
     }
+    
+    public void reset() {
+        for (GUI gui:renderGUIList) {
+            if (gui instanceof GUITextCredits) {
+                GUITextCredits newGui = (GUITextCredits) gui;
+                newGui.posY = newGui.firstY;
+            }
+            if (gui instanceof GUITextCreditsEnd) {
+                GUITextCreditsEnd newGui = (GUITextCreditsEnd) gui;
+                newGui.posY = newGui.firstY;
+            }
+        }
+    }
 
     public class GUITextCredits extends GUIText {
 
@@ -96,6 +117,8 @@ public class ScreenChangeLog extends Screen {
         public boolean done = false;
         public int extraSpace;
         public boolean hasSetLastY = false;
+        public int firstY = 0;
+        public TrueTypeFont font;
 
         public void draw() {
             if (visible) {
@@ -106,11 +129,30 @@ public class ScreenChangeLog extends Screen {
                     }
                 }
 
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
                 }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
+                }
+                
                 if (!hasSetLastY) {
                     posY = lastY + extraSpace;
+                    firstY = posY;
                     lastY = posY + 3 + font.getHeight(label);
                     hasSetLastY = true;
                 }
@@ -134,6 +176,8 @@ public class ScreenChangeLog extends Screen {
         public boolean done = false;
         public int extraSpace;
         public boolean hasSetLastY = false;
+        public int firstY = 0;
+        public TrueTypeFont font;
 
         public void draw() {
             if (visible) {
@@ -145,11 +189,29 @@ public class ScreenChangeLog extends Screen {
                     }
                 }
 
-                if (font == null) {
-                    font = new TrueTypeFont(new Font("Courier", Font.PLAIN, fontSize),true);
+                if (font48 == null || font36 == null || font24 == null || font16 == null || font12 == null) {
+                    loadFonts();
+                }
+                switch (fontSize) {
+                    case 48:
+                        font = font48;
+                        break;
+                    case 36:
+                        font = font36;
+                        break;
+                    case 24:
+                        font = font24;
+                        break;
+                    case 16:
+                        font = font16;
+                        break;
+                    case 12:
+                        font = font12;
+                        break;
                 }
                 if (!hasSetLastY) {
                     posY = lastY + extraSpace;
+                    firstY = posY;
                     lastY = posY + 3 + font.getHeight(label);
                     hasSetLastY = true;
                 }

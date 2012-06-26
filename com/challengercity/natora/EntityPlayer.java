@@ -15,22 +15,24 @@ import org.newdawn.slick.opengl.*;
  */
 public class EntityPlayer extends Entity {
     
-    private int dir = 0;
-    private int ani = 0;
+    private byte dir = 0;
+    private byte ani = 0;
     protected TrueTypeFont font;
     private int aniDelay = 10;
     public boolean performingAction = false;
     private Texture texture2;
-    private int maxHealth = 50;
-    public int health = 50;
+    private int maxHealth = 100;
+    public int health = 100;
     private Texture healthTexture;
     public int wealth = 0;
     public int items = 10;
     private String username;
+    private ScreenGame screen;
 
     public EntityPlayer(int x, int y, int width, int height, Screen sc, String username) {
         super(x, y, width, height, 0, 0, 32, 32, sc);
         this.username = username;
+        this.screen = (ScreenGame) sc;
     }
     
     public String getUsername() {
@@ -41,7 +43,7 @@ public class EntityPlayer extends Entity {
         return dir;
     }
 
-    public void setDir(int dir) {
+    public void setDir(byte dir) {
         this.dir = dir;
     }
 
@@ -49,12 +51,12 @@ public class EntityPlayer extends Entity {
         return ani;
     }
 
-    public void setAni(int ani) {
+    public void setAni(byte ani) {
         this.ani = ani;
     }
     
     public Rectangle getHitbox(){
-        hitbox.setBounds(posX+4, posY, width-8, height);
+        hitbox.setBounds(posX+4, posY+4, width-8, height-8);
         return hitbox;
     }
     
@@ -62,11 +64,7 @@ public class EntityPlayer extends Entity {
         performingAction = true;
         switch (dir) {
             case 0:
-                for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.intersectsOffset(screen.renderTileList.get(i), 16, 0)) {
-                        screen.renderTileList.get(i).breakTile();
-                    }
-                }
+                screen.world.breakTile(posX+16+8, posY+8, width-16, height-16);
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.intersectsOffset(ro, 16, 0)&&ro instanceof EntityMonster) {
@@ -76,11 +74,7 @@ public class EntityPlayer extends Entity {
                 }
                 break;
             case 1:
-                for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.intersectsOffset(screen.renderTileList.get(i), 0, -16)) {
-                        screen.renderTileList.get(i).breakTile();
-                    }
-                }
+                screen.world.breakTile(posX+8, posY-16+8, width-16, height-16);
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.intersectsOffset(ro, 0, -16)&&ro instanceof EntityMonster) {
@@ -90,11 +84,7 @@ public class EntityPlayer extends Entity {
                 }
                 break;
             case 2:
-                for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.intersectsOffset(screen.renderTileList.get(i), -16, 0)) {
-                        screen.renderTileList.get(i).breakTile();
-                    }
-                }
+                screen.world.breakTile(posX-16+8, posY+8, width-16, height-16);
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.intersectsOffset(ro, -16, 0)&&ro instanceof EntityMonster) {
@@ -104,11 +94,7 @@ public class EntityPlayer extends Entity {
                 }
                 break;
             case 3:
-                for (int i = 0; i<screen.renderTileList.size(); i++) {
-                    if (this.intersectsOffset(screen.renderTileList.get(i), 0, 16)) {
-                        screen.renderTileList.get(i).breakTile();
-                    }
-                }
+                screen.world.breakTile(posX+8, posY+16+8, width-16, height-16);
                 for (int i = 0; i<screen.renderEntityList.size(); i++) {
                     RenderableObject ro = screen.renderEntityList.get(i);
                     if (this.intersectsOffset(ro, 0, 16)&&ro instanceof EntityMonster) {
@@ -122,86 +108,25 @@ public class EntityPlayer extends Entity {
     
     public void performAction2() { // Place/Use
         boolean clear = true;
-        TileStone tr;
         switch (dir) {
             case 0:
                 if (items>0) {
-                    tr = new TileStone(posX+width, posY, screen);
-                    clear = true;
-                    for (int i = 0; i<screen.renderTileList.size(); i++) {
-                        if (tr.intersects(screen.renderTileList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
-                        if (tr.intersects(screen.renderEntityList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    if (clear) {
-                        screen.addToRenderList(tr);
-                        items--;
-                    }
+                    screen.world.placeTile(posX+48, posY+16);
                 }
                 break;
             case 1:
                 if (items>0) {
-                    tr = new TileStone(posX, posY-32, screen);
-                    clear = true;
-                    for (int i = 0; i<screen.renderTileList.size(); i++) {
-                        if (tr.intersects(screen.renderTileList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
-                        if (tr.intersects(screen.renderEntityList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    if (clear) {
-                        screen.addToRenderList(tr);
-                        items--;
-                    }
+                    screen.world.placeTile(posX+16, posY-32);
                 }
                 break;
             case 2:
                 if (items>0) {
-                    tr = new TileStone(posX-32, posY, screen);
-                    clear = true;
-                    for (int i = 0; i<screen.renderTileList.size(); i++) {
-                        if (tr.intersects(screen.renderTileList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
-                        if (tr.intersects(screen.renderEntityList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    if (clear) {
-                        screen.addToRenderList(tr);
-                        items--;
-                    }
+                    screen.world.placeTile(posX-32, posY+16);
                 }
                 break;
             case 3:
                 if (items>0) {
-                    tr = new TileStone(posX, posY+height, screen);
-                    clear = true;
-                    for (int i = 0; i<screen.renderTileList.size(); i++) {
-                        if (tr.intersects(screen.renderTileList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    for (int i = 0; i<screen.renderEntityList.size(); i++) {
-                        if (tr.intersects(screen.renderEntityList.get(i))) {
-                            clear = false;
-                        }
-                    }
-                    if (clear) {
-                        screen.addToRenderList(tr);
-                        items--;
-                    }
+                    screen.world.placeTile(posX+16, posY+48);
                 }
                 break;
         }
@@ -209,15 +134,11 @@ public class EntityPlayer extends Entity {
     
     public void update(long delta) {
         if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight&&!performingAction) {
-            boolean clear = true;
-            for (int i = 0; i<screen.renderTileList.size(); i++) {
-                if (this.intersectsOffset((RenderableObject) screen.renderTileList.get(i), (int)(velX*delta), (int)(velY*delta))) {
-                    clear = false;
-                }
-            }
+            boolean clear = screen.world.intersectsOffset(this, (int)(velX*delta), (int)(velY*delta));
             if (clear) {
                 posX = posX + (int)(velX*delta);
                 posY = posY + (int)(velY*delta);
+                screen.world.navigateWorld(-velX, -velY, delta);
             }
         }
         if (velX==0&&velY==0) {
@@ -230,6 +151,17 @@ public class EntityPlayer extends Entity {
                 Renderer.removeFromRenderList(screen.nt.currentScreen);
                 screen.nt.currentScreen = new ScreenMenu(screen.nt);
             }
+        }
+        /* Check direction */
+        if (velY>0) {
+            dir=3;
+        } else if (velY<0) {
+            dir=1;
+        }
+        if (velX>0) {
+            dir=0;
+        } else if (velX<0){
+            dir=2;
         }
     }
     
