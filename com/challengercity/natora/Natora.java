@@ -36,11 +36,11 @@ public class Natora {
         super();
         this.mainDir=new File(dir);
         this.username=username;
+        run();
     }
     
     public static void main(String[] args) {
         Natora nt = new Natora(args[0], args[1]);
-        nt.run();
     }
     
     public long getTime() {
@@ -123,7 +123,7 @@ public class Natora {
     }
     
     public void run() {
-        version = "0.1.3 Alpha";
+        version = "0.1.4 Alpha";
         System.out.println("[Natora] Initialized - v"+version);
         screenWidth=1280;
         screenHeight=720;
@@ -134,8 +134,10 @@ public class Natora {
             glViewport(0, 0, Display.getWidth(), Display.getHeight());
             screenHeight=Display.getHeight();
             screenWidth=Display.getWidth();
+            ViewPort.updateView();
         } catch(Exception ex) {
             System.out.println("[Natora] Could not setup display.");
+            ex.printStackTrace();
             System.exit(1);
         }
         

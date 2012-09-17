@@ -19,29 +19,32 @@ public abstract class Item extends Entity {
     }
     
     public void draw() {
-        if (texture == null) {
-            texture = ResourceLoader.loadImage("Items", ".PNG");
-        }
-        texture.bind();
-        
-        glBegin(GL_QUADS);
-        glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Left
-        glVertex2i(posX, posY);
+        onScreen = ViewPort.checkOnScreen(this);
+        if (onScreen) {
+            if (texture == null) {
+                texture = ResourceLoader.loadImage("Items", ".PNG");
+            }
+            texture.bind();
 
-        glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Right
-        glVertex2i(posX+width, posY);
+            glBegin(GL_QUADS);
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Left
+            glVertex2i(ViewPort.getViewX(posX), ViewPort.getViewY(posY));
 
-        glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Right
-        glVertex2i(posX+width, posY+height);
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Right
+            glVertex2i(ViewPort.getViewX(posX)+width, ViewPort.getViewY(posY));
 
-        glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Left
-        glVertex2i(posX, posY+height);
-        glEnd();
-        
-        if (countdown <= 0) {
-            delete();
-        } else {
-            countdown = countdown-(int)Natora.lastDelta;
+            glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Right
+            glVertex2i(ViewPort.getViewX(posX)+width, ViewPort.getViewY(posY)+height);
+
+            glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Left
+            glVertex2i(ViewPort.getViewX(posX), ViewPort.getViewY(posY)+height);
+            glEnd();
+
+            if (countdown <= 0) {
+                delete();
+            } else {
+                countdown = countdown-(int)Natora.lastDelta;
+            }
         }
     }
     

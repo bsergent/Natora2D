@@ -17,45 +17,45 @@ public abstract class Tile {
     
     protected int picX, picY, picWidth, picHeight;
     protected static Texture texture;
-    protected Random randGen = new Random();
-    protected World world;
-    protected String name;
-    protected int hardness;
-    protected boolean visible = true;
+    protected static Random randGen = new Random();
+    protected static World world;
+    protected boolean onScreen = true;
     protected Rectangle rect;
-    protected boolean isSolid;
     protected int index;
+    private boolean hover = false;
     
-    public Tile(int index, int picX, int picY, String name, int hardness, boolean isSolid, World world, Rectangle rect) {
+    public Tile(int index, int picX, int picY, World world, Rectangle rect) {
         this.picX=picX;
         this.picY=picY;
         this.picWidth=32;
         this.picHeight=32;
-        this.name=name;
-        this.hardness=hardness;
         this.world=world;
         this.rect=rect;
-        this.isSolid=isSolid;
         this.index=index;
           
     }
     
+    
+    
     public abstract void breakTile();
     
-    public int getHardness() {
-        return hardness;
-    }
+    public abstract int getHardness();
 
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
+    
+    public abstract boolean isSolid();
     
     public void delete() {
         world.tiles[index] = new TileDirt(world, new Rectangle(rect.x, rect.y, 32, 32), index);
     }
     
+    public void hover() {
+        this.hover = true;
+    }
+    
     public void draw() {
-        if (visible) {
+        onScreen = ViewPort.checkOnScreen(this);
+        if (onScreen) {
             if (texture == null) {
                 texture = ResourceLoader.loadImage("Tiles", ".PNG");
             }
@@ -63,17 +63,31 @@ public abstract class Tile {
 
             glBegin(GL_QUADS);
             glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Left
-            glVertex2i(rect.x, rect.y);
+            glVertex2i(ViewPort.getViewX(rect.x), ViewPort.getViewY(rect.y));
 
             glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY, texture.getImageHeight()));  // Upper-Right
-            glVertex2i(rect.x + rect.width, rect.y);
+            glVertex2i(ViewPort.getViewX(rect.x) + rect.width, ViewPort.getViewY(rect.y));
 
             glTexCoord2f(Renderer.getTextureFloat(picX+picWidth, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Right
-            glVertex2i(rect.x+rect.width, rect.y+rect.height);
+            glVertex2i(ViewPort.getViewX(rect.x)+rect.width, ViewPort.getViewY(rect.y)+rect.height);
 
             glTexCoord2f(Renderer.getTextureFloat(picX, texture.getImageWidth()), Renderer.getTextureFloat(picY+picHeight, texture.getImageHeight()));  // Lower-Left
-            glVertex2i(rect.x, rect.y+rect.height);
+            glVertex2i(ViewPort.getViewX(rect.x), ViewPort.getViewY(rect.y)+rect.height);
             glEnd();
+            
+            if (this.hover) {
+                glDisable(GL_TEXTURE_2D);
+                glColor4f(0.3f,0.3f,0.0f,0.3f);
+                glBegin(GL_QUADS);
+                glVertex2i(ViewPort.getViewX(rect.x), ViewPort.getViewY(rect.y));
+                glVertex2i(ViewPort.getViewX(rect.x)+rect.width, ViewPort.getViewY(rect.y));
+                glVertex2i(ViewPort.getViewX(rect.x)+rect.width, ViewPort.getViewY(rect.y)+rect.height);
+                glVertex2i(ViewPort.getViewX(rect.x), ViewPort.getViewY(rect.y)+rect.height);
+                glEnd();
+                glColor4f(1.0f,1.0f,1.0f,1.0f);
+                glEnable(GL_TEXTURE_2D);
+                hover = false;
+            }
         }
     }
 }

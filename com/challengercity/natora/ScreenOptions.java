@@ -41,7 +41,7 @@ public class ScreenOptions extends Screen {
         if (id==0) {
             if (!nt.fullscreen) {
                 try {
-                    nt.setDisplayMode(1280, 720, true);
+                    nt.setDisplayMode(1280, 720, true); // 1280, 720  |  2560, 1440
                     glViewport(0, 0, 1280, 720);
                     nt.screenHeight=Display.getHeight();
                     nt.screenWidth=Display.getWidth();
@@ -60,6 +60,7 @@ public class ScreenOptions extends Screen {
                     System.out.println("[Natora] Could not enter fullscreen");
                 }
             }
+            ViewPort.updateView();
         }
         if (id==1) {
             Renderer.removeFromRenderList(nt.currentScreen);

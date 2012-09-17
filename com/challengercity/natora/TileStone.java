@@ -13,8 +13,20 @@ import java.awt.Rectangle;
 public class TileStone extends Tile {
     
     public TileStone(World world, Rectangle rect, int index) {
-        super(index, 0, 0, "Stone", 5, true, world, rect);
+        super(index, 0, 0, world, rect);
           
+    }
+    
+    public int getHardness() {
+        return 5;
+    }
+    
+    public String getName() {
+        return "Stone";
+    }
+    
+    public boolean isSolid() {
+        return true;
     }
     
     public void breakTile() {

@@ -103,49 +103,47 @@ public class EntityMonster extends Entity {
             }
             movementChangeDelay=60;
         }
-        if (posX+velX*delta>0&&posX+velX*delta+width<Natora.screenWidth && posY+velY*delta>0&&posY+velY*delta+height<Natora.screenHeight) { // Check screen boundries
-            boolean clear = true;
-            clear = this.screen.world.intersectsOffset(this, (int)(velX*delta), (int)(velY*delta));
-            if (clear) {
-                posX = posX + (int)(velX*delta);
-                posY = posY + (int)(velY*delta);
-                if (playerToAttack != null) {
-                    if (playerToAttack.intersectsField(posX-8,posY-160, 16, 320)) {
-                        if (playerToAttack.posY>this.posY) {
-                            velY = 0.3f;
-                            velX = 0.0f;
-                        } else if (playerToAttack.posY<this.posY) {
-                            velY = -0.3f;
-                            velX = 0.0f;
-                        }
-                    } else {
-                        if (playerToAttack.posX>this.posX) {
-                            velX = 0.3f;
-                            velY = 0.0f;
-                        } else if (playerToAttack.posX<this.posX) {
-                            velX = -0.3f;
-                            velY = 0.0f;
-                        }
+        boolean clear = true;
+        clear = this.screen.world.intersectsOffset(this, (int)(velX*delta), (int)(velY*delta));
+        if (clear) {
+            posX = posX + (int)(velX*delta);
+            posY = posY + (int)(velY*delta);
+            if (playerToAttack != null) {
+                if (playerToAttack.intersectsField(posX-8,posY-160, 16, 320)) {
+                    if (playerToAttack.posY>this.posY) {
+                        velY = 0.3f;
+                        velX = 0.0f;
+                    } else if (playerToAttack.posY<this.posY) {
+                        velY = -0.3f;
+                        velX = 0.0f;
                     }
-                    if (playerToAttack.intersectsField(posX-160,posY-8, 320, 16)) {
-                        if (playerToAttack.posX>this.posX) {
-                            velX = 0.3f;
-                            velY = 0.0f;
-                        } else if (playerToAttack.posX<this.posX) {
-                            velX = -0.3f;
-                            velY = 0.0f;
-                        }
-                    } else {
-                        if (playerToAttack.posY>this.posY) {
-                            velY = 0.3f;
-                            velX = 0.0f;
-                        } else if (playerToAttack.posY<this.posY) {
-                            velY = -0.3f;
-                            velX = 0.0f;
-                        }
+                } else {
+                    if (playerToAttack.posX>this.posX) {
+                        velX = 0.3f;
+                        velY = 0.0f;
+                    } else if (playerToAttack.posX<this.posX) {
+                        velX = -0.3f;
+                        velY = 0.0f;
                     }
-                    movementChangeDelay=1;
                 }
+                if (playerToAttack.intersectsField(posX-160,posY-8, 320, 16)) {
+                    if (playerToAttack.posX>this.posX) {
+                        velX = 0.3f;
+                        velY = 0.0f;
+                    } else if (playerToAttack.posX<this.posX) {
+                        velX = -0.3f;
+                        velY = 0.0f;
+                    }
+                } else {
+                    if (playerToAttack.posY>this.posY) {
+                        velY = 0.3f;
+                        velX = 0.0f;
+                    } else if (playerToAttack.posY<this.posY) {
+                        velY = -0.3f;
+                        velX = 0.0f;
+                    }
+                }
+                movementChangeDelay=1;
             }
         }
         movementChangeDelay--;
@@ -181,68 +179,54 @@ public class EntityMonster extends Entity {
     }
     
     public void draw() {
-        if (staticTexture == null) {
-            staticTexture = ResourceLoader.loadImage("EntityMonster", ".PNG");
-        }
-        if (healthTexture == null) {
-            healthTexture = ResourceLoader.loadImage("HealthBar", ".PNG");
-        }
-        glDisable(GL_TEXTURE_2D);
-        glColor4f(0.3f,0.3f,0.0f,0.2f);
-        glBegin(GL_QUADS);
-        glVertex2i(posX-128, posY-128);
-        glVertex2i(posX-128+width+256, posY-128);
-        glVertex2i(posX-128+width+256, posY-128+height+256);
-        glVertex2i(posX-128, posY-128+height+256);
-        glEnd();
-        glColor4f(0.5f,0.1f,0.1f,0.2f);
-        glBegin(GL_QUADS);
-        glVertex2i(posX-8, posY-8);
-        glVertex2i(posX-8+width+16, posY-8);
-        glVertex2i(posX-8+width+16, posY-8+height+16);
-        glVertex2i(posX-8, posY-8+height+16);
-        glEnd();
-        glColor4f(1.0f,1.0f,1.0f,1.0f);
-        glEnable(GL_TEXTURE_2D);
-        
-        staticTexture.bind();
-        glBegin(GL_QUADS);
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), staticTexture.getImageHeight()));  // Upper-Left
-        glVertex2i(posX, posY);
-
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), staticTexture.getImageHeight()));  // Upper-Right
-        glVertex2i(posX+width, posY);
-
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, staticTexture.getImageHeight()));  // Lower-Right
-        glVertex2i(posX+width, posY+height);
-
-        glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, staticTexture.getImageHeight()));  // Lower-Left
-        glVertex2i(posX, posY+height);
-        glEnd();
-        
-        healthTexture.bind();
-        glBegin(GL_QUADS);
-        glTexCoord2f((float)health/maxHealth, 0.0f);  // Upper-Left
-        glVertex2i(posX, posY-4);
-
-        glTexCoord2f((float)health/maxHealth-Renderer.getTextureFloat(1, healthTexture.getImageHeight()), 0.0f);  // Upper-Right
-        glVertex2i((int)(posX+width/((float)maxHealth/health)), posY-4);
-
-        glTexCoord2f((float)health/maxHealth-Renderer.getTextureFloat(1, healthTexture.getImageHeight()), Renderer.getTextureFloat(1, healthTexture.getImageHeight()));  // Lower-Right
-        glVertex2i((int)(posX+width/((float)maxHealth/health)), posY-1);
-
-        glTexCoord2f((float)health/maxHealth, Renderer.getTextureFloat(1, healthTexture.getImageHeight()));  // Lower-Left
-        glVertex2i(posX, posY-1);
-        glEnd();
-        
-        if (aniDelay<=0) {
-            aniDelay=15;
-            if (ani>=4) {
-                ani=0;
+        onScreen = ViewPort.checkOnScreen(this);
+        if (onScreen) {
+            if (staticTexture == null) {
+                staticTexture = ResourceLoader.loadImage("EntityMonster", ".PNG");
             }
-            ani++;
+            if (healthTexture == null) {
+                healthTexture = ResourceLoader.loadImage("HealthBar", ".PNG");
+            }
+
+            staticTexture.bind();
+            glBegin(GL_QUADS);
+            glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), staticTexture.getImageHeight()));  // Upper-Left
+            glVertex2i(ViewPort.getViewX(posX), ViewPort.getViewY(posY));
+
+            glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight), staticTexture.getImageHeight()));  // Upper-Right
+            glVertex2i(ViewPort.getViewX(posX)+width, ViewPort.getViewY(posY));
+
+            glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth)+picWidth, staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, staticTexture.getImageHeight()));  // Lower-Right
+            glVertex2i(ViewPort.getViewX(posX)+width, ViewPort.getViewY(posY)+height);
+
+            glTexCoord2f(Renderer.getTextureFloat(picX+(ani*picWidth), staticTexture.getImageWidth()), Renderer.getTextureFloat(picY+(dir*picHeight)+picHeight, staticTexture.getImageHeight()));  // Lower-Left
+            glVertex2i(ViewPort.getViewX(posX), ViewPort.getViewY(posY)+height);
+            glEnd();
+
+            healthTexture.bind();
+            glBegin(GL_QUADS);
+            glTexCoord2f((float)health/maxHealth, 0.0f);  // Upper-Left
+            glVertex2i(ViewPort.getViewX(posX), ViewPort.getViewY(posY)-4);
+
+            glTexCoord2f((float)health/maxHealth-Renderer.getTextureFloat(1, healthTexture.getImageHeight()), 0.0f);  // Upper-Right
+            glVertex2i((int)(ViewPort.getViewX(posX)+width/((float)maxHealth/health)), ViewPort.getViewY(posY)-4);
+
+            glTexCoord2f((float)health/maxHealth-Renderer.getTextureFloat(1, healthTexture.getImageHeight()), Renderer.getTextureFloat(1, healthTexture.getImageHeight()));  // Lower-Right
+            glVertex2i((int)(ViewPort.getViewX(posX)+width/((float)maxHealth/health)), ViewPort.getViewY(posY)-1);
+
+            glTexCoord2f((float)health/maxHealth, Renderer.getTextureFloat(1, healthTexture.getImageHeight()));  // Lower-Left
+            glVertex2i(ViewPort.getViewX(posX), ViewPort.getViewY(posY)-1);
+            glEnd();
+
+            if (aniDelay<=0) {
+                aniDelay=15;
+                if (ani>=4) {
+                    ani=0;
+                }
+                ani++;
+            }
+            aniDelay--;
         }
-        aniDelay--;
     }
     
 }

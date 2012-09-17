@@ -22,7 +22,7 @@ public class ScreenLoadingWorld extends Screen {
     }
     
     public void startup() {
-        addToRenderList(new GUIText(Natora.screenWidth/2, Natora.screenHeight/2, this, "Loading world, please wait...", 24, true));
+        addToRenderList(new GUIText(Natora.screenWidth/2, Natora.screenHeight/2, this, "Generating world, please wait...", 24, true));
     }
     
     public void actionPerformed(int id) {

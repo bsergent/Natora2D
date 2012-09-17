@@ -16,7 +16,7 @@ public class ResourceLoader {
     public static Texture loadImage(String imageName, String fileExt) {
         Texture texture = null;
         try {
-                texture = TextureLoader.getTexture(fileExt, new FileInputStream(new File("/Users/Ben/Documents/Natora/src/com/challengercity/natora/resources/"+imageName+fileExt)));
+                texture = TextureLoader.getTexture(fileExt, ClassLoader.getSystemClassLoader().getResourceAsStream("com/challengercity/natora/resources/"+imageName+(fileExt.toLowerCase())));
         } catch (Exception ex) {
                 System.out.println("[ResourceLoader] Could not load texture - "+imageName+fileExt);
                 ex.printStackTrace();

@@ -72,7 +72,7 @@ public class Controller {
             if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
                 Random gen = new Random();
                 if (cooldown<=0) {
-                    nt.currentScreen.addToRenderList(new EntityMonster(gen.nextInt(nt.screenWidth-32),gen.nextInt(nt.screenHeight-32),32,32,nt.currentScreen));
+                    nt.currentScreen.addToRenderList(new EntityMonster(ViewPort.getViewX(gen.nextInt(nt.screenWidth-32)),ViewPort.getViewY(gen.nextInt(nt.screenHeight-32)),32,32,nt.currentScreen));
                     cooldown = 15;
                 }
             }
@@ -85,6 +85,12 @@ public class Controller {
             if (Keyboard.isKeyDown(Keyboard.KEY_X) || Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 if (cooldown<=0) {
                     nt.thePlayer.performAction2();
+                    cooldown = 10;
+                }
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                if (cooldown<=0) {
+                    nt.thePlayer.toggleHover();
                     cooldown = 10;
                 }
             }

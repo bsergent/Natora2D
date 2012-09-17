@@ -37,6 +37,14 @@ public class ScreenChangeLog extends Screen {
         addToRenderList(new GUITextCredits(this, "Natora©", 48, true, 0));
         addToRenderList(new GUITextCredits(this, "v" + Natora.version, 24, true, -25));
 
+        addToRenderList(new GUITextCredits(this, "v0.1.4 Alpha - 6/30/12", 16, true, 10));
+        //addToRenderList(new GUITextCredits(this, "+Mobs spawn automatically", 24, true, 0));
+        //addToRenderList(new GUITextCredits(this, "*Player spawns at map center", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Optimized world generation", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Optimized tiles", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "+Optimized screen movement", 24, true, 0));
+        addToRenderList(new GUITextCredits(this, "*Only loads on-screen tiles", 24, true, 0));
+        
         addToRenderList(new GUITextCredits(this, "v0.1.3 Alpha - 6/25/12", 16, true, 10));
         addToRenderList(new GUITextCredits(this, "+Simple world generation", 24, true, 0));
         addToRenderList(new GUITextCredits(this, "+Moving view", 24, true, 0));

@@ -21,6 +21,7 @@ public abstract class Entity extends RenderableObject {
     private Random randGen = new Random();
     protected Texture texture;
     protected Screen screen;
+    protected boolean onScreen;
     
     public Entity(int x, int y, int width, int height, int picX, int picY, int picWidth, int picHeight, Screen sc) {
         

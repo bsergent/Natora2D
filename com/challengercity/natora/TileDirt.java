@@ -13,8 +13,20 @@ import java.awt.Rectangle;
 public class TileDirt extends Tile {
 
     public TileDirt(World world, Rectangle rect, int index) {
-        super(index, 32, 0, "Dirt", 5, false, world, rect);
+        super(index, 32, 0, world, rect);
           
+    }
+    
+    public int getHardness() {
+        return 1;
+    }
+    
+    public String getName() {
+        return "Dirt";
+    }
+    
+    public boolean isSolid() {
+        return false;
     }
     
     public void breakTile() {

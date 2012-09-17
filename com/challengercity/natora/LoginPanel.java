@@ -258,9 +258,8 @@ public class LoginPanel extends javax.swing.JPanel {
         String response2 = response1.replaceAll("\"", "");
         String[] response3 = response2.split("=");
         if (response3[0].equals("1")) {
-            Thread startThread = new Thread(new StartThread("startThread", response3[1], setUpDirectory().toString()));
-            startThread.start();
-            //this.dispose();
+            Thread startThread = new Thread(new StartThread("startThread", response3[1], "")); // Directory
+            myFrame.dispose();
             System.out.println("[Login] Starting Natora");
         } else {
             errorLabel.setText("Incorrect Username and Password.");
@@ -317,39 +316,39 @@ public class LoginPanel extends javax.swing.JPanel {
         }
       }
     
-    public File setUpDirectory() {
-        File dir = null;
-        if (isMac()) { // Get Main Path
-            dir = new File("/Users/"+System.getProperty("user.name")+"/Library/Application Support/Natora");
-        } else if (isWindows()) {
-            dir = new File("C:/Users/"+System.getProperty("user.name")+"/AppData/Roaming/Natora");
-        } else {
-            System.out.println("[NatoraLogin] Operating system not valid");
-        }
-        
-        dir.mkdir(); // Make Directory
-        
-        // Download natives
-        
-        if (isMac()) { // Load Libraries
-            System.load(dir+"/natives/libjinput-osx.jnilib");
-            System.load(dir+"/natives/liblwjgl.jnilib");
-            System.load(dir+"/natives/openal.dylib");
-        } else if (isWindows()) {
-            System.load(dir+"/natives/jinput-dx8_64.dll");
-            System.load(dir+"/natives/jinput-dx8.dll");
-            System.load(dir+"/natives/jinput-raw_64.dll");
-            System.load(dir+"/natives/jinput-raw.dll");
-            System.load(dir+"/natives/lwjgl.dll");
-            System.load(dir+"/natives/lwjgl64.dll");
-            System.load(dir+"/natives/OpenAL32.dll");
-            System.load(dir+"/natives/OpenAL64.dll");
-        } else {
-            System.out.println("[NatoraLogin] Operating system not valid");
-        }
-        
-        return dir;
-    }
+//    public File setUpDirectory() {
+//        File dir = null;
+//        if (isMac()) { // Get Main Path
+//            dir = new File("/Users/"+System.getProperty("user.name")+"/Library/Application Support/Natora");
+//        } else if (isWindows()) {
+//            dir = new File("C:/Users/"+System.getProperty("user.name")+"/AppData/Roaming/Natora");
+//        } else {
+//            System.out.println("[NatoraLogin] Operating system not valid");
+//        }
+//        
+//        dir.mkdir(); // Make Directory
+//        
+//        // Download natives
+//        
+//        if (isMac()) { // Load Libraries
+//            System.load(dir+"/natives/libjinput-osx.jnilib");
+//            System.load(dir+"/natives/liblwjgl.jnilib");
+//            System.load(dir+"/natives/openal.dylib");
+//        } else if (isWindows()) {
+//            System.load(dir+"/natives/jinput-dx8_64.dll");
+//            System.load(dir+"/natives/jinput-dx8.dll");
+//            System.load(dir+"/natives/jinput-raw_64.dll");
+//            System.load(dir+"/natives/jinput-raw.dll");
+//            System.load(dir+"/natives/lwjgl.dll");
+//            System.load(dir+"/natives/lwjgl64.dll");
+//            System.load(dir+"/natives/OpenAL32.dll");
+//            System.load(dir+"/natives/OpenAL64.dll");
+//        } else {
+//            System.out.println("[NatoraLogin] Operating system not valid");
+//        }
+//        
+//        return dir;
+//    }
     
     public static boolean isWindows() {
         String os = System.getProperty("os.name").toLowerCase();
@@ -378,15 +377,14 @@ public class LoginPanel extends javax.swing.JPanel {
 	}
 	public void run() {
             try {
-                Thread.sleep(100);
-            } catch (Exception ex) {
-                
-            }
+                Thread.sleep(500);
+            } catch (Exception ex) {}
             Natora nt = new Natora(username, dir);
-            nt.run();
   
 	}
     }
+    
+    public javax.swing.JFrame myFrame;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;

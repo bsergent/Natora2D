@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  * @author Ben Sergent V/ha1fBit
  */
-public class Login extends JApplet {
+public class LoginApplet extends JApplet {
     
     public void init() {
         this.add(new LoginPanel());
